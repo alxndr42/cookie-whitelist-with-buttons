@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
+<!DOCTYPE dialog SYSTEM "chrome://cwwb/locale/cwwb.dtd">
+
+<prefwindow
+  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+  id="cwwb-options-window"
+  title="Cookie Whitelist, With Buttons">
+  
+  <prefpane>
+    <preferences>
+      <preference id="pref-accept-third-party" name="extensions.cwwb.accept_third_party" type="bool"/>
+      <preference id="pref-hide-add-button" name="extensions.cwwb.hide_add_button" type="bool"/>
+      <preference id="pref-hide-rec-button" name="extensions.cwwb.hide_record_button" type="bool"/>
+      <preference id="pref-rec-button-startup" name="extensions.cwwb.record_button_startup" type="int"/>
+    </preferences>
+    
+    <groupbox>
+      <caption label="&main.group;"/>
+      <checkbox label="&acceptAll.label;" preference="pref-accept-third-party"/>
+      <separator orient="vertical"/>
+      <label value="&recordStartup.label;"/>
+      <menulist preference="pref-rec-button-startup">
+        <menupopup>
+          <menuitem label="&recordStartup.off;" value="0"/>
+          <menuitem label="&recordStartup.on;" value="1"/>
+          <menuitem label="&recordStartup.last;" value="2"/>
+        </menupopup>
+      </menulist>
+    </groupbox>
+    
+    <groupbox>
+      <caption label="&appearance.group;"/>
+      <checkbox label="&hideAdd.label;" preference="pref-hide-add-button"/>
+      <checkbox label="&hideRecord.label;" preference="pref-hide-rec-button"/>
+    </groupbox>
+  </prefpane>
+</prefwindow>

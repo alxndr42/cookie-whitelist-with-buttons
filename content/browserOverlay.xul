@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE window SYSTEM "chrome://cwwb/locale/cwwb.dtd">
+
+<overlay
+  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+  id="cwwb-browser-overlay">
+  
+  <script type="application/x-javascript" src="chrome://cwwb/content/browserOverlay.js"/>
+  <script type="application/x-javascript" src="chrome://cwwb/content/addButton.js"/>
+  <script type="application/x-javascript" src="chrome://cwwb/content/recordButton.js"/>
+  <script type="application/x-javascript" src="chrome://cwwb/content/permissionTracker.js"/>
+  <script type="application/x-javascript" src="chrome://cwwb/content/permissionListeners.js"/>
+  
+  <statusbar id="status-bar">
+    <statusbarpanel
+      id="cwwb-panel"
+      insertafter="security-button"
+      context="_child">
+      
+      <image id="cwwb-record-button"/>
+      <separator id="cwwb-separator"/>
+      <image id="cwwb-add-button"/>
+      
+      <menupopup position="before_start">
+        <menuitem label="&whitelist.label;" command="cwwb-cmd-showwhitelist"/>
+        <menuitem label="&cookies.label;" command="cwwb-cmd-showcookies"/>
+      </menupopup>
+      
+      <command id="cwwb-cmd-showwhitelist" oncommand="CWWB.showWhitelist();"/>
+      <command id="cwwb-cmd-showcookies" oncommand="CWWB.showCookies();"/>
+      
+      <stringbundle id="cwwb-properties" src="chrome://cwwb/locale/cwwb.properties"/>
+    </statusbarpanel>
+  </statusbar>
+</overlay>

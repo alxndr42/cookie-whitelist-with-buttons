@@ -1,0 +1,18 @@
+<!ENTITY  whitelist.label      "Whitelist">
+<!ENTITY  cookies.label        "Cookies">
+<!ENTITY  add.title            "Add to Whitelist">
+<!ENTITY  allow.label          "Allow">
+<!ENTITY  allow.access         "A">
+<!ENTITY  session.label        "Allow for Session">
+<!ENTITY  session.access       "S">
+<!ENTITY  cancel.label         "Cancel">
+<!ENTITY  cancel.access        "C">
+<!ENTITY  main.group           "Main">
+<!ENTITY  acceptAll.label      "Accept third-party cookies">
+<!ENTITY  recordStartup.label  "When Firefox starts:">
+<!ENTITY  recordStartup.off    "Turn the Record button off">
+<!ENTITY  recordStartup.on     "Turn the Record button on">
+<!ENTITY  recordStartup.last   "Leave the Record button unchanged">
+<!ENTITY  appearance.group     "Appearance">
+<!ENTITY  hideAdd.label        "Hide the Add button">
+<!ENTITY  hideRecord.label     "Hide the Record button">

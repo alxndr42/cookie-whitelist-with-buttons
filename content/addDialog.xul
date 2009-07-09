@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
+<!DOCTYPE dialog SYSTEM "chrome://cwwb/locale/cwwb.dtd">
+
+<dialog
+  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+  id="cwwb-add-dialog"
+  persist="screenX screenY"
+  title="&add.title;"
+  buttons="extra1,extra2,cancel"
+  buttonlabelextra1="&allow.label;"
+  buttonaccesskeyextra1="&allow.access;"
+  ondialogextra1="CWWBAddDialog.onAllow();"
+  buttonlabelextra2="&session.label;"
+  buttonaccesskeyextra2="&session.access;"
+  ondialogextra2="CWWBAddDialog.onSession();"
+  buttonlabelcancel="&cancel.label;"
+  buttonaccesskeycancel="&cancel.access;"
+  defaultButton="extra1">
+  
+  <script type="application/x-javascript" src="chrome://cwwb/content/addDialog.js"/>
+  
+  <textbox id="cwwb-add-textbox" size="40"/>
+</dialog>

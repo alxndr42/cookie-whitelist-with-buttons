@@ -1,0 +1,7 @@
+content cwwb             content/
+locale  cwwb en-US       locale/en-US/
+skin    cwwb classic/1.0 skin/classic/win/ os!=Darwin
+skin    cwwb classic/1.0 skin/classic/mac/ os=Darwin
+
+overlay chrome://browser/content/browser.xul chrome://cwwb/content/browserOverlay.xul
+style   chrome://browser/content/browser.xul chrome://cwwb/skin/browserOverlay.css
