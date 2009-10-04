@@ -12,8 +12,8 @@ const CWWBPermissionTracker = {
     const host = this._filterHost(uri);
     const idx  = this._tabCo.selectedIndex;
     
+    var perm = null;
     if (host != null) {
-      var perm;
       if (host == this._pCache[idx].host) {
         perm = this._pCache[idx].perm;
       }
@@ -22,13 +22,12 @@ const CWWBPermissionTracker = {
         this._pCache[idx].host = host;
         this._pCache[idx].perm = perm;
       }
-      CWWBAdd.updateState(host, perm);
     }
     else {
       this._pCache[idx].host = null;
       this._pCache[idx].perm = null;
-      CWWBAdd.setNeutralState();
     }
+    CWWBAdd.updateState(host, perm);
   },
   
   tabOpen : function(aTab, aIndex) {
