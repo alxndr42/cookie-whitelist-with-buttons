@@ -5,7 +5,7 @@
 <prefwindow
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
   id="cwwb-options-window"
-  title="Cookie Whitelist, With Buttons">
+  title="&extension.title;">
   
   <prefpane>
     <preferences>

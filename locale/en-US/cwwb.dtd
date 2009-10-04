@@ -1,3 +1,4 @@
+<!ENTITY  extension.title      "Cookie Whitelist, With Buttons">
 <!ENTITY  whitelist.label      "Whitelist">
 <!ENTITY  cookies.label        "Cookies">
 <!ENTITY  add.title            "Add to Whitelist">
