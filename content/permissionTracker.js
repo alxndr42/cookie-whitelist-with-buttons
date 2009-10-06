@@ -1,13 +1,6 @@
 // Copyright 2008 Alexander Dietrich <alexander@dietrich.cx>
 // Released under the terms of the GNU General Public License version 2 or later.
 
-function log(aMessage) {
-    const console =
-      Components.classes["@mozilla.org/consoleservice;1"].getService(
-        Components.interfaces.nsIConsoleService);
-    console.logStringMessage(aMessage);
-}
-
 const CWWBPermissionTracker = {
   _pManager : undefined,
   _pCache   : undefined,
@@ -16,17 +9,14 @@ const CWWBPermissionTracker = {
   checkCurrentURI : function() {
     const uri  = gBrowser.currentURI;
     const host = this._filterHost(uri);
-log("checkCurrentURI: " + host);
     var perm = null;
     
     if (host != null) {
       if (this._pCache[host] == undefined) {
-log("cache miss");
         perm = this._pManager.testPermission(uri, "cookie");
         this._pCache[host] = perm;
       }
       else {
-log("cache hit");
         perm = this._pCache[host];
       }
     }
@@ -36,7 +26,6 @@ log("cache hit");
   // Updates the permission cache when a tab is closed
   tabClose : function(aURI) {
     const tabHost = this._filterHost(aURI);
-log("tabClose: " + tabHost);
     if (tabHost == null)
       return;
     
@@ -47,10 +36,8 @@ log("tabClose: " + tabHost);
       if (host == tabHost)
         count++;
     }
-    if (count == 1) {
-log("cache eviction by tab close");
+    if (count == 1)
       delete this._pCache[tabHost];
-    }
   },
   
   // Resets the permission cache on whitelist edits
@@ -58,7 +45,6 @@ log("cache eviction by tab close");
     if (aHost == null)
       return;
     
-log ("whitelist edit, resetting cache");
     this._pCache = [];
     this.checkCurrentURI();
   },
