@@ -36,41 +36,17 @@ const CWWBProgressListener = {
   }
 };
 
-// Observes tab open/close/move events
+// Observes tab close events
 const CWWBTabListener = {
-  _tabCo : undefined,
-  
-  _onTabOpen : function(aEvent) {
-    const tab = aEvent.target;
-    const idx = this._tabCo.getIndexOfItem(tab);
-    CWWBPermissionTracker.tabOpen(tab, idx);
-  },
-  
-  _onTabClose : function(aEvent) {
-    const tab = aEvent.target;
-    const idx = this._tabCo.getIndexOfItem(tab);
-    CWWBPermissionTracker.tabClose(tab, idx);
-  },
-  
-  _onTabMove : function(aEvent) {
-    const tab = aEvent.target;
-    const idx = this._tabCo.getIndexOfItem(tab);
-    CWWBPermissionTracker.tabMove(tab, idx);
+  onTabClose : function(aEvent) {
+    const idx = gBrowser.tabContainer.getIndexOfItem(aEvent.target);
+    CWWBPermissionTracker.tabClose(gBrowser.browsers[idx].currentURI);
   },
   
   init : function() {
-    this._tabCo = gBrowser.tabContainer;
-    this._tabCo.addEventListener(
-      "TabOpen",
-      function(event) { CWWBTabListener._onTabOpen(event); },
-      false);
-    this._tabCo.addEventListener(
+    gBrowser.tabContainer.addEventListener(
       "TabClose",
-      function(event) { CWWBTabListener._onTabClose(event); },
-      false);
-    this._tabCo.addEventListener(
-      "TabMove",
-      function(event) { CWWBTabListener._onTabMove(event); },
+      function(event) { CWWBTabListener.onTabClose(event); },
       false);
   },
   
