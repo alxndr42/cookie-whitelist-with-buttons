@@ -90,11 +90,9 @@ const CWWB = {
     
     CWWBAdd.init();
     CWWBRecord.init();
-    CWWBPermissionTracker.init();
   },
   
   cleanup : function() {
-    CWWBPermissionTracker.cleanup();
     CWWBRecord.cleanup();
     CWWBAdd.cleanup();
     

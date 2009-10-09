@@ -1,41 +1,23 @@
 // Copyright 2008 Alexander Dietrich <alexander@dietrich.cx>
 // Released under the terms of the GNU General Public License version 2 or later.
 
-function LOG(aMessage) {
-  const console =
-    Components.classes["@mozilla.org/consoleservice;1"].getService(
-      Components.interfaces.nsIConsoleService);
-  console.logStringMessage(aMessage);
-}
-
-function LOG_PROPS(aObject, aName) {
-  var result = "Properties of " + aName + ":\n";
-  for (var prop in aObject)
-    result += prop + " = " + aObject[prop] + "\n";
-  LOG(result);
-}
-
 const CWWBPermissionTracker = {
-  NSIPERM : Components.interfaces.nsIPermission,
+  nsIP : Components.interfaces.nsIPermission,
   
-  _obsService : undefined,
   _pManager : undefined,
   _currentHost : undefined,
   
   // Checks the current URI's permission
   checkCurrentURI : function() {
-    const uri  = gBrowser.currentURI;
+    const uri = gBrowser.currentURI;
     const host = this._filterHost(uri);
     
     if (host == this._currentHost)
-	  return;
-	
+      return;
+    
     var perm = null;
     if (host != null)
-{
-LOG("Test: " + host);
       perm = this._pManager.testPermission(uri, "cookie");
-}
     this._currentHost = host;
     CWWBAdd.updateState(host, perm);
   },
@@ -60,12 +42,9 @@ LOG("Test: " + host);
   observe : function (aSubject, aTopic, aData) {
     if (aTopic != "perm-changed")
       return;
-    if (!(aSubject instanceof this.NSIPERM) || aSubject.type != "cookie")
-      return;
-    if (aSubject.host != this._currentHost)
+    if (!(aSubject instanceof this.nsIP) || aSubject.type != "cookie")
       return;
     
-LOG("Permission change on current host");
     this._currentHost = null;
     this.checkCurrentURI();
   },
@@ -77,16 +56,18 @@ LOG("Permission change on current host");
     this._currentHost = null;
     this.checkCurrentURI();
     
-    this._obsService =
+    CWWBProgressListener.init();
+    const obsService =
       Components.classes["@mozilla.org/observer-service;1"].getService(
         Components.interfaces.nsIObserverService);
-    this._obsService.addObserver(this, "perm-changed", false);
-    CWWBProgressListener.init();
+    obsService.addObserver(this, "perm-changed", false);
   },
   
   cleanup : function() {
-    this._obsService.removeObserver(this, "perm-changed");
-    CWWBProgressListener.cleanup();
+    const obsService =
+      Components.classes["@mozilla.org/observer-service;1"].getService(
+        Components.interfaces.nsIObserverService);
+    obsService.removeObserver(this, "perm-changed");
   }
 };
 
@@ -110,13 +91,14 @@ const CWWBProgressListener = {
     CWWBPermissionTracker.checkCurrentURI();
   },
   
+  onProgressChange : function() {},
+  onStateChange : function() {},
+  onStatusChange : function() {},
+  onSecurityChange : function() {},
+  
   init : function() {
     gBrowser.addProgressListener(
       CWWBProgressListener,
       Components.interfaces.nsIWebProgress.NOTIFY_STATE_DOCUMENT);
-  },
-  
-  cleanup : function() {
   }
 };
-

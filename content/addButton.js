@@ -106,7 +106,7 @@ const CWWBAdd = {
   observe : function(aSubject, aTopic, aData) {
     if (aTopic != "nsPref:changed")
       return;
-	
+    
     this._syncPrefs();
   },
   
@@ -140,6 +140,7 @@ const CWWBAdd = {
     
     this._syncPrefs();
     this._setDisabled();
+    CWWBPermissionTracker.init();
     
     this._addButton.addEventListener(
       "click",
@@ -148,6 +149,7 @@ const CWWBAdd = {
   },
   
   cleanup : function() {
+    CWWBPermissionTracker.cleanup();
     this._removePrefObservers();
   }
 };
