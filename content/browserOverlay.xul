@@ -9,7 +9,6 @@
   <script type="application/x-javascript" src="chrome://cwwb/content/addButton.js"/>
   <script type="application/x-javascript" src="chrome://cwwb/content/recordButton.js"/>
   <script type="application/x-javascript" src="chrome://cwwb/content/permissionTracker.js"/>
-  <script type="application/x-javascript" src="chrome://cwwb/content/permissionListeners.js"/>
   
   <statusbar id="status-bar">
     <statusbarpanel
