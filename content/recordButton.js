@@ -163,12 +163,12 @@ const CWWBRecord = {
     this._prefBranch =
       prefs.getBranch(null).QueryInterface(
         Components.interfaces.nsIPrefBranch2);
+    this._addPrefObservers();
     
     this._syncAllPrefs();
     this._setStartupState();
     this._updateUI();
     
-    this._addPrefObservers();
     this._recordButton.addEventListener(
       "click",
       function(event) { return CWWBRecord._onClick(event) },
