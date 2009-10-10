@@ -1,4 +1,4 @@
-// Copyright 2008 Alexander Dietrich <alexander@dietrich.cx>
+// Copyright 2008, 2009 Alexander Dietrich <alexander@dietrich.cx>
 // Released under the terms of the GNU General Public License version 2 or later.
 
 const CWWBRecord = {
@@ -163,12 +163,12 @@ const CWWBRecord = {
     this._prefBranch =
       prefs.getBranch(null).QueryInterface(
         Components.interfaces.nsIPrefBranch2);
-    this._addPrefObservers();
     
     this._syncAllPrefs();
     this._setStartupState();
     this._updateUI();
     
+    this._addPrefObservers();
     this._recordButton.addEventListener(
       "click",
       function(event) { return CWWBRecord._onClick(event) },

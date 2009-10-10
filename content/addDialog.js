@@ -1,8 +1,8 @@
-// Copyright 2008 Alexander Dietrich <alexander@dietrich.cx>
+// Copyright 2008, 2009 Alexander Dietrich <alexander@dietrich.cx>
 // Released under the terms of the GNU General Public License version 2 or later.
 
 const CWWBAddDialog = {
-  PERM_ALLOW : Components.interfaces.nsICookiePermission.ACCESS_ALLOW,
+  PERM_ALLOW   : Components.interfaces.nsICookiePermission.ACCESS_ALLOW,
   PERM_SESSION : Components.interfaces.nsICookiePermission.ACCESS_SESSION,
   
   _dialog : undefined,

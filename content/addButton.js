@@ -1,4 +1,4 @@
-// Copyright 2008 Alexander Dietrich <alexander@dietrich.cx>
+// Copyright 2008, 2009 Alexander Dietrich <alexander@dietrich.cx>
 // Released under the terms of the GNU General Public License version 2 or later.
 
 const CWWBAdd = {
@@ -136,10 +136,11 @@ const CWWBAdd = {
     this._prefBranch =
       prefs.getBranch(null).QueryInterface(
         Components.interfaces.nsIPrefBranch2);
-    this._addPrefObservers();
     
     this._syncPrefs();
     this._setDisabled();
+    
+    this._addPrefObservers();
     CWWBPermissionTracker.init();
     
     this._addButton.addEventListener(
