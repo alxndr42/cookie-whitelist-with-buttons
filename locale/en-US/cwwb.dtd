@@ -11,9 +11,9 @@
 <!ENTITY  main.group           "Main">
 <!ENTITY  acceptAll.label      "Accept third-party cookies">
 <!ENTITY  recordStartup.label  "When Firefox starts:">
-<!ENTITY  recordStartup.off    "Turn the Record button off">
-<!ENTITY  recordStartup.on     "Turn the Record button on">
-<!ENTITY  recordStartup.last   "Leave the Record button unchanged">
+<!ENTITY  recordStartup.off    "Turn the Cookie button off">
+<!ENTITY  recordStartup.on     "Turn the Cookie button on">
+<!ENTITY  recordStartup.last   "Leave the Cookie button unchanged">
 <!ENTITY  appearance.group     "Appearance">
 <!ENTITY  hideAdd.label        "Hide the Add button">
 <!ENTITY  hideRecord.label     "Hide the Record button">
