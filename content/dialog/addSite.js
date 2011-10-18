@@ -1,4 +1,4 @@
-// Copyright 2008, 2009 Alexander Dietrich <alexander@dietrich.cx>
+// Copyright 2008 Alexander Dietrich <alexander@dietrich.cx>
 // Released under the terms of the GNU General Public License version 2 or later.
 
 const CWWBAddDialog = {
@@ -55,8 +55,8 @@ const CWWBAddDialog = {
   },
   
   init : function() {
-    this._dialog = document.getElementById("cwwb-add-dialog");
-    this._textbox = document.getElementById("cwwb-add-textbox");
+    this._dialog = document.getElementById("cwwb-addsite");
+    this._textbox = document.getElementById("cwwb-addsite-textbox");
     this._textbox.value = window.arguments[0];
     // Without a prior select(), the range setting is overriden
     // and the entire text selected when the dialog appears...

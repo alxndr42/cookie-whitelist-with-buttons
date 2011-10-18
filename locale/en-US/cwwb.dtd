@@ -16,4 +16,4 @@
 <!ENTITY  recordStartup.last   "Leave the Cookie button unchanged">
 <!ENTITY  appearance.group     "Appearance">
 <!ENTITY  hideAdd.label        "Hide the Add button">
-<!ENTITY  hideRecord.label     "Hide the Record button">
+<!ENTITY  hideRecord.label     "Hide the Cookie button">

@@ -1,4 +1,4 @@
-// Copyright 2008, 2009 Alexander Dietrich <alexander@dietrich.cx>
+// Copyright 2008 Alexander Dietrich <alexander@dietrich.cx>
 // Released under the terms of the GNU General Public License version 2 or later.
 
 const CWWB = {
@@ -70,10 +70,10 @@ const CWWB = {
   },
   
   init : function() {
-    this._addButton    = document.getElementById("cwwb-add-button");
-    this._recordButton = document.getElementById("cwwb-record-button");
-    this._separator    = document.getElementById("cwwb-separator");
-    this._panel        = document.getElementById("cwwb-panel");
+    this._addButton    = document.getElementById("cwwb-statusbar-add");
+    this._recordButton = document.getElementById("cwwb-statusbar-record");
+    this._separator    = document.getElementById("cwwb-statusbar-separator");
+    this._panel        = document.getElementById("cwwb-statusbar");
     
     const prefs =
       Components.classes["@mozilla.org/preferences-service;1"].getService(

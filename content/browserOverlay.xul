@@ -6,29 +6,37 @@
   id="cwwb-browser-overlay">
   
   <script type="application/x-javascript" src="chrome://cwwb/content/browserOverlay.js"/>
-  <script type="application/x-javascript" src="chrome://cwwb/content/addButton.js"/>
-  <script type="application/x-javascript" src="chrome://cwwb/content/recordButton.js"/>
-  <script type="application/x-javascript" src="chrome://cwwb/content/permissionTracker.js"/>
+  <script type="application/x-javascript" src="chrome://cwwb/content/model/permissionTracker.js"/>
+  <script type="application/x-javascript" src="chrome://cwwb/content/statusbar/addButton.js"/>
+  <script type="application/x-javascript" src="chrome://cwwb/content/statusbar/recordButton.js"/>
+  
+  <stringbundleset>
+    <stringbundle id="cwwb-properties" src="chrome://cwwb/locale/cwwb.properties"/>
+  </stringbundleset>
+  
+  <commandset>
+    <command id="cwwb-cmd-toggle-record" oncommand="CWWB.toggleRecord();"/>
+    <command id="cwwb-cmd-add-site" oncommand="CWWB.addSite();"/>
+    <command id="cwwb-cmd-show-whitelist" oncommand="CWWB.showWhitelist();"/>
+    <command id="cwwb-cmd-show-cookies" oncommand="CWWB.showCookies();"/>
+  </commandset>
   
   <statusbar id="status-bar">
     <statusbarpanel
-      id="cwwb-panel"
+      id="cwwb-statusbar"
       insertafter="security-button"
       context="_child">
       
-      <image id="cwwb-record-button"/>
-      <separator id="cwwb-separator"/>
-      <image id="cwwb-add-button"/>
+      <image id="cwwb-statusbar-record"/>
+      <separator id="cwwb-statusbar-separator"/>
+      <image id="cwwb-statusbar-add"/>
       
       <menupopup position="before_start">
-        <menuitem label="&whitelist.label;" command="cwwb-cmd-showwhitelist"/>
-        <menuitem label="&cookies.label;" command="cwwb-cmd-showcookies"/>
+        <menuitem label="&whitelist.label;" command="cwwb-cmd-show-whitelist"/>
+        <menuitem label="&cookies.label;" command="cwwb-cmd-show-cookies"/>
       </menupopup>
       
-      <command id="cwwb-cmd-showwhitelist" oncommand="CWWB.showWhitelist();"/>
-      <command id="cwwb-cmd-showcookies" oncommand="CWWB.showCookies();"/>
-      
-      <stringbundle id="cwwb-properties" src="chrome://cwwb/locale/cwwb.properties"/>
     </statusbarpanel>
   </statusbar>
+  
 </overlay>

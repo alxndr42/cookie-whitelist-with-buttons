@@ -1,4 +1,4 @@
-// Copyright 2008, 2009 Alexander Dietrich <alexander@dietrich.cx>
+// Copyright 2008 Alexander Dietrich <alexander@dietrich.cx>
 // Released under the terms of the GNU General Public License version 2 or later.
 
 const CWWBAdd = {
@@ -64,7 +64,7 @@ const CWWBAdd = {
     
     const host = this._getHost();
     window.openDialog(
-      "chrome://cwwb/content/addDialog.xul",
+      "chrome://cwwb/content/dialog/addSite.xul",
       "_blank",
       "modal,centerscreen",
       host,
@@ -127,7 +127,7 @@ const CWWBAdd = {
   },
   
   init : function() {
-    this._addButton = document.getElementById("cwwb-add-button");
+    this._addButton = document.getElementById("cwwb-statusbar-add");
     this._properties = document.getElementById("cwwb-properties");
     
     const prefs =

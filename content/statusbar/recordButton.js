@@ -1,4 +1,4 @@
-// Copyright 2008, 2009 Alexander Dietrich <alexander@dietrich.cx>
+// Copyright 2008 Alexander Dietrich <alexander@dietrich.cx>
 // Released under the terms of the GNU General Public License version 2 or later.
 
 const CWWBRecord = {
@@ -151,7 +151,7 @@ const CWWBRecord = {
   },
   
   init : function() {
-    this._recordButton = document.getElementById("cwwb-record-button");
+    this._recordButton = document.getElementById("cwwb-statusbar-record");
     
     const properties = document.getElementById("cwwb-properties");
     this._tooltipOff = properties.getString("recordOff.tooltip");

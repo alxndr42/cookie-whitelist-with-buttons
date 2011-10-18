@@ -4,7 +4,7 @@
 
 <dialog
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-  id="cwwb-add-dialog"
+  id="cwwb-addsite"
   persist="screenX screenY"
   title="&add.title;"
   buttons="extra1,extra2,cancel"
@@ -18,7 +18,7 @@
   buttonaccesskeycancel="&cancel.access;"
   defaultButton="extra1">
   
-  <script type="application/x-javascript" src="chrome://cwwb/content/addDialog.js"/>
+  <script type="application/x-javascript" src="chrome://cwwb/content/dialog/addSite.js"/>
   
-  <textbox id="cwwb-add-textbox" size="40"/>
+  <textbox id="cwwb-addsite-textbox" size="40"/>
 </dialog>
