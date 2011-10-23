@@ -97,8 +97,6 @@ const CWWBProgressListener = {
   onSecurityChange : function() {},
   
   init : function() {
-    gBrowser.addProgressListener(
-      CWWBProgressListener,
-      Components.interfaces.nsIWebProgress.NOTIFY_STATE_DOCUMENT);
+    gBrowser.addProgressListener(CWWBProgressListener);
   }
 };
