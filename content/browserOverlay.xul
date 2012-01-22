@@ -6,19 +6,20 @@
   id="cwwb-browser-overlay">
   
   <script type="application/x-javascript" src="chrome://cwwb/content/browserOverlay.js"/>
-  <script type="application/x-javascript" src="chrome://cwwb/content/model/permissionTracker.js"/>
-  <script type="application/x-javascript" src="chrome://cwwb/content/statusbar/addButton.js"/>
-  <script type="application/x-javascript" src="chrome://cwwb/content/statusbar/recordButton.js"/>
+  <script type="application/x-javascript" src="chrome://cwwb/content/model/addModel.js"/>
+  <script type="application/x-javascript" src="chrome://cwwb/content/model/recordModel.js"/>
+  <script type="application/x-javascript" src="chrome://cwwb/content/statusbar/statusbar.js"/>
+  <script type="application/x-javascript" src="chrome://cwwb/content/statusbar/statusbarAdd.js"/>
+  <script type="application/x-javascript" src="chrome://cwwb/content/statusbar/statusbarRecord.js"/>
   
   <stringbundleset>
     <stringbundle id="cwwb-properties" src="chrome://cwwb/locale/cwwb.properties"/>
   </stringbundleset>
   
   <commandset>
-    <command id="cwwb-cmd-toggle-record" oncommand="CWWB.toggleRecord();"/>
-    <command id="cwwb-cmd-add-site" oncommand="CWWB.addSite();"/>
-    <command id="cwwb-cmd-show-whitelist" oncommand="CWWB.showWhitelist();"/>
+    <command id="cwwb-cmd-show-add-dialog" oncommand="CWWB.showAddDialog();"/>
     <command id="cwwb-cmd-show-cookies" oncommand="CWWB.showCookies();"/>
+    <command id="cwwb-cmd-show-whitelist" oncommand="CWWB.showWhitelist();"/>
   </commandset>
   
   <statusbar id="status-bar">

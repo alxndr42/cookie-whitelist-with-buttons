@@ -5,32 +5,38 @@ const CWWB = {
   HIDE_ADD_PREF    : "extensions.cwwb.hide_add_button",
   HIDE_RECORD_PREF : "extensions.cwwb.hide_record_button",
   
-  _addButton    : undefined,
-  _recordButton : undefined,
-  _separator    : undefined,
-  _panel        : undefined,
-  _prefBranch   : undefined,
-  _hideAdd      : undefined,
-  _hideRecord   : undefined,
+  prefs  : undefined,
+  add    : undefined,
+  record : undefined,
   
-  _updateUI : function() {
-    this._addButton.hidden = this._hideAdd;
-    this._recordButton.hidden = this._hideRecord;
-    this._separator.hidden = (this._hideAdd || this._hideRecord);
-    this._panel.hidden = (this._hideAdd && this._hideRecord);
+  _windowCount : undefined,
+  
+  _countWindows : function() {
+    var mediator =
+      Components.classes["@mozilla.org/appshell/window-mediator;1"].getService(
+        Components.interfaces.nsIWindowMediator);
+    var enumerator = mediator.getEnumerator("navigator:browser");
+    
+    var count = 0;
+    while (enumerator.hasMoreElements()) {
+      enumerator.getNext();
+      count++;
+    }
+    
+    this._windowCount = count;
   },
   
-  _syncAddPref : function() {
-    this._hideAdd = this._prefBranch.getBoolPref(this.HIDE_ADD_PREF);
-  },
-  
-  _syncRecordPref : function() {
-    this._hideRecord = this._prefBranch.getBoolPref(this.HIDE_RECORD_PREF);
+  showAddDialog : function() {
+    window.openDialog(
+      "chrome://cwwb/content/dialog/addSite.xul",
+      "_blank",
+      "modal,centerscreen",
+      gBrowser.currentURI.host);
   },
   
   showWhitelist : function() {
-    const properties = document.getElementById("cwwb-properties");
-    const params = {
+    var properties = document.getElementById("cwwb-properties");
+    var params = {
       blockVisible   : false,
       sessionVisible : true,
       allowVisible   : true,
@@ -55,49 +61,33 @@ const CWWB = {
       null);
   },
   
-  // Reacts to changes to the Add and Record Button hide preferences
-  observe : function(aSubject, aTopic, aData) {
-    if (aTopic != "nsPref:changed")
-      return;
-    
-    if (aData == this.HIDE_ADD_PREF)
-      this._syncAddPref();
-    else
-    if (aData == this.HIDE_RECORD_PREF)
-      this._syncRecordPref();
-    
-    this._updateUI();
+  log : function(aMessage) {
+    var console = Components.classes["@mozilla.org/consoleservice;1"].
+	  getService(Components.interfaces.nsIConsoleService);
+    console.logStringMessage(aMessage);
+  },
+  
+  isFirstWindow : function() {
+    return this._windowCount == 1;
   },
   
   init : function() {
-    this._addButton    = document.getElementById("cwwb-statusbar-add");
-    this._recordButton = document.getElementById("cwwb-statusbar-record");
-    this._separator    = document.getElementById("cwwb-statusbar-separator");
-    this._panel        = document.getElementById("cwwb-statusbar");
-    
-    const prefs =
+    this.prefs =
       Components.classes["@mozilla.org/preferences-service;1"].getService(
         Components.interfaces.nsIPrefService);
-    this._prefBranch =
-      prefs.getBranch(null).QueryInterface(
-        Components.interfaces.nsIPrefBranch2);
-    this._prefBranch.addObserver(this.HIDE_ADD_PREF, this, false);
-    this._prefBranch.addObserver(this.HIDE_RECORD_PREF, this, false);
+    this.add = CWWBAddModel;
+    this.record = CWWBRecordModel;
+    this._countWindows();
     
-    this._syncAddPref();
-    this._syncRecordPref();
-    this._updateUI();
-    
-    CWWBAdd.init();
-    CWWBRecord.init();
+    CWWBAddModel.init();
+    CWWBRecordModel.init();
+    CWWBStatusbar.init();
   },
   
   cleanup : function() {
-    CWWBRecord.cleanup();
-    CWWBAdd.cleanup();
-    
-    this._prefBranch.removeObserver(this.HIDE_ADD_PREF, this);
-    this._prefBranch.removeObserver(this.HIDE_RECORD_PREF, this);
+    CWWBStatusbar.cleanup();
+    CWWBRecordModel.cleanup();
+    CWWBAddModel.cleanup();
   }
 }
 
