@@ -1,0 +1,15 @@
+#cwwb-statusbar-separator { width: 4px; }
+
+#cwwb-toolbar-record {
+  list-style-image: url("chrome://cwwb/skin/record-off.png");
+}
+#cwwb-toolbar-record[cwwb-record="on"] {
+  list-style-image: url("chrome://cwwb/skin/record-on.png");
+}
+
+toolbar[iconsize="small"] #cwwb-toolbar-record {
+  list-style-image: url("chrome://cwwb/skin/record-off.png");
+}
+toolbar[iconsize="small"] #cwwb-toolbar-record[cwwb-record="on"] {
+  list-style-image: url("chrome://cwwb/skin/record-on.png");
+}

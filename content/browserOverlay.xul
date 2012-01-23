@@ -11,6 +11,8 @@
   <script type="application/x-javascript" src="chrome://cwwb/content/statusbar/statusbar.js"/>
   <script type="application/x-javascript" src="chrome://cwwb/content/statusbar/statusbarAdd.js"/>
   <script type="application/x-javascript" src="chrome://cwwb/content/statusbar/statusbarRecord.js"/>
+  <script type="application/x-javascript" src="chrome://cwwb/content/toolbar/toolbar.js"/>
+  <script type="application/x-javascript" src="chrome://cwwb/content/toolbar/toolbarRecord.js"/>
   
   <stringbundleset>
     <stringbundle id="cwwb-properties" src="chrome://cwwb/locale/cwwb.properties"/>
@@ -21,6 +23,13 @@
     <command id="cwwb-cmd-show-cookies" oncommand="CWWB.showCookies();"/>
     <command id="cwwb-cmd-show-whitelist" oncommand="CWWB.showWhitelist();"/>
   </commandset>
+  
+  <toolbarpalette id="BrowserToolbarPalette">
+    <toolbarbutton
+      id="cwwb-toolbar-record"
+      label="&cookies.label;"
+      class="toolbarbutton-1 chromeclass-toolbar-additional"/>
+  </toolbarpalette>
   
   <statusbar id="status-bar">
     <statusbarpanel
@@ -36,8 +45,6 @@
         <menuitem label="&whitelist.label;" command="cwwb-cmd-show-whitelist"/>
         <menuitem label="&cookies.label;" command="cwwb-cmd-show-cookies"/>
       </menupopup>
-      
     </statusbarpanel>
   </statusbar>
-  
 </overlay>

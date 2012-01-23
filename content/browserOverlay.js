@@ -82,9 +82,11 @@ const CWWB = {
     CWWBAddModel.init();
     CWWBRecordModel.init();
     CWWBStatusbar.init();
+    CWWBToolbar.init();
   },
   
   cleanup : function() {
+    CWWBToolbar.cleanup();
     CWWBStatusbar.cleanup();
     CWWBRecordModel.cleanup();
     CWWBAddModel.cleanup();
