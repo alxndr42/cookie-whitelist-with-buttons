@@ -61,6 +61,10 @@ const CWWB = {
       null);
   },
   
+  toggleRecord : function() {
+    this.record.toggle();
+  },
+  
   log : function(aMessage) {
     var console = Components.classes["@mozilla.org/consoleservice;1"].
 	  getService(Components.interfaces.nsIConsoleService);
@@ -81,13 +85,12 @@ const CWWB = {
     
     CWWBAddModel.init();
     CWWBRecordModel.init();
-    CWWBStatusbar.init();
     CWWBToolbar.init();
+    CWWBStatusbar.init();
   },
   
   cleanup : function() {
     CWWBToolbar.cleanup();
-    CWWBStatusbar.cleanup();
     CWWBRecordModel.cleanup();
     CWWBAddModel.cleanup();
   }
