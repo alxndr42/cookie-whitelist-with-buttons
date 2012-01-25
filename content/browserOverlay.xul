@@ -24,10 +24,18 @@
     <command id="cwwb-cmd-toggle-record" oncommand="CWWB.toggleRecord();"/>
   </commandset>
   
+  <popupset>
+    <menupopup id="cwwb-context" position="after_start">
+      <menuitem label="&whitelist.label;" command="cwwb-cmd-show-whitelist"/>
+      <menuitem label="&cookies.label;" command="cwwb-cmd-show-cookies"/>
+    </menupopup>
+  </popupset>
+  
   <toolbarpalette id="BrowserToolbarPalette">
     <toolbaritem
       id="cwwb-toolbar"
       label="&extension.title;"
+      context="cwwb-context"
       insertafter="home-button"
       class="chromeclass-toolbar-additional">
       <toolbarbutton
@@ -46,17 +54,12 @@
   <statusbar id="status-bar">
     <statusbarpanel
       id="cwwb-statusbar"
-      insertafter="security-button"
-      context="_child">
+      context="cwwb-context"
+      insertafter="security-button">
       
       <image id="cwwb-statusbar-record"/>
       <separator id="cwwb-statusbar-separator"/>
       <image id="cwwb-statusbar-add"/>
-      
-      <menupopup position="before_start">
-        <menuitem label="&whitelist.label;" command="cwwb-cmd-show-whitelist"/>
-        <menuitem label="&cookies.label;" command="cwwb-cmd-show-cookies"/>
-      </menupopup>
     </statusbarpanel>
   </statusbar>
 </overlay>
