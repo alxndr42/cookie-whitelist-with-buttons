@@ -8,9 +8,6 @@
   <script type="application/x-javascript" src="chrome://cwwb/content/browserOverlay.js"/>
   <script type="application/x-javascript" src="chrome://cwwb/content/model/addModel.js"/>
   <script type="application/x-javascript" src="chrome://cwwb/content/model/recordModel.js"/>
-  <script type="application/x-javascript" src="chrome://cwwb/content/statusbar/statusbar.js"/>
-  <script type="application/x-javascript" src="chrome://cwwb/content/statusbar/statusbarAdd.js"/>
-  <script type="application/x-javascript" src="chrome://cwwb/content/statusbar/statusbarRecord.js"/>
   <script type="application/x-javascript" src="chrome://cwwb/content/toolbar.js"/>
   
   <stringbundleset>
@@ -26,8 +23,8 @@
   
   <popupset>
     <menupopup id="cwwb-context" position="after_start">
-      <menuitem label="&whitelist.label;" command="cwwb-cmd-show-whitelist"/>
       <menuitem label="&cookies.label;" command="cwwb-cmd-show-cookies"/>
+      <menuitem label="&whitelist.label;" command="cwwb-cmd-show-whitelist"/>
     </menupopup>
   </popupset>
   
@@ -50,16 +47,4 @@
         class="toolbarbutton-1"/>
       </toolbaritem>
   </toolbarpalette>
-  
-  <statusbar id="status-bar">
-    <statusbarpanel
-      id="cwwb-statusbar"
-      context="cwwb-context"
-      insertafter="security-button">
-      
-      <image id="cwwb-statusbar-record"/>
-      <separator id="cwwb-statusbar-separator"/>
-      <image id="cwwb-statusbar-add"/>
-    </statusbarpanel>
-  </statusbar>
 </overlay>

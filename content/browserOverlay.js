@@ -86,7 +86,6 @@ const CWWB = {
     CWWBAddModel.init();
     CWWBRecordModel.init();
     CWWBToolbar.init();
-    CWWBStatusbar.init();
   },
   
   cleanup : function() {
