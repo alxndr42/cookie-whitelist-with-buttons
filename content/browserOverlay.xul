@@ -25,11 +25,22 @@
   </commandset>
   
   <toolbarpalette id="BrowserToolbarPalette">
-    <toolbarbutton
-      id="cwwb-toolbar-record"
-      label="&cookies.label;"
-      command="cwwb-cmd-toggle-record"
-      class="toolbarbutton-1 chromeclass-toolbar-additional"/>
+    <toolbaritem
+      id="cwwb-toolbar"
+      label="&extension.title;"
+      insertafter="home-button"
+      class="chromeclass-toolbar-additional">
+      <toolbarbutton
+        id="cwwb-toolbar-record"
+        label="&cookies.label;"
+        command="cwwb-cmd-toggle-record"
+        class="toolbarbutton-1"/>
+      <toolbarbutton
+        id="cwwb-toolbar-add"
+        label="&whitelist.label;"
+        command="cwwb-cmd-show-add-dialog"
+        class="toolbarbutton-1"/>
+      </toolbaritem>
   </toolbarpalette>
   
   <statusbar id="status-bar">

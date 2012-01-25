@@ -4,6 +4,34 @@
 const CWWBToolbar = {
   _props   : undefined,
   
+  _updateAdd : function() {
+    var button = document.getElementById("cwwb-toolbar-add");
+    if (!button)
+      return;
+    
+    var model = CWWB.add;
+    if (model.getState() == model.STATE_UNLISTED) {
+      button.disabled = false;
+      button.tooltipText = this._props.getString("addButtonUnlisted.tooltip");
+    } else {
+      button.disabled = true;
+      switch (model.getState()) {
+        case model.STATE_WHITELIST:
+          button.tooltipText = this._props.getString("addButtonAllow.tooltip");
+          break;
+        case model.STATE_WHITELIST_SESSION:
+          button.tooltipText = this._props.getString("addButtonSession.tooltip");
+          break;
+        case model.STATE_BLACKLIST:
+          button.tooltipText = this._props.getString("addButtonDeny.tooltip");
+          break;
+        default:
+          button.tooltipText = "";
+          break;
+      }
+    }
+  },
+  
   _updateRecord : function() {
     var button = document.getElementById("cwwb-toolbar-record");
     if (!button)
@@ -20,11 +48,14 @@ const CWWBToolbar = {
   },
   
   updateAll : function() {
+    this._updateAdd();
     this._updateRecord();
   },
   
   modelUpdate : function(aModel) {
-    if (aModel === CWWB.record) {
+    if (aModel === CWWB.add) {
+      this._updateAdd();
+    } else {
       this._updateRecord();
     }
   },
