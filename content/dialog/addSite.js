@@ -10,16 +10,12 @@ const CWWBAddDialog = {
   
   _dialog          : undefined,
   _textbox         : undefined,
-  _selectSubdomain : undefined,
   
   // Adds the given permission for valid hosts.
   _addPermission : function(type) {
     var uri = this._getURI();
     if (uri != null) {
-      var pManager =
-        Components.classes["@mozilla.org/permissionmanager;1"].getService(
-          Components.interfaces.nsIPermissionManager);
-      pManager.add(uri, "cookie", type);
+      Services.perms.add(uri, "cookie", type);
       return true;
     }
     
@@ -34,10 +30,7 @@ const CWWBAddDialog = {
       return null;
     
     try {
-      var ioService =
-        Components.classes["@mozilla.org/network/io-service;1"].getService(
-          Components.interfaces.nsIIOService);
-      return ioService.newURI("http://" + host, null, null);
+      return Services.io.newURI("http://" + host, null, null);
     }
     catch (e) {
       return null;
@@ -47,9 +40,6 @@ const CWWBAddDialog = {
   // Attempts to detect the subdomain part of the current host,
   // for preselection in the textbox.
   _getSelectionEnd : function(aHost) {
-    if (!this._selectSubdomain)
-      return 0;
-    
     var parts = aHost.split(".");
     if (parts.length < 3)
       return 0;
@@ -82,26 +72,24 @@ const CWWBAddDialog = {
   },
   
   init : function() {
-    var prefs =
-      Components.classes["@mozilla.org/preferences-service;1"].getService(
-        Components.interfaces.nsIPrefService);
-    var prefBranch =
-      prefs.getBranch(null).QueryInterface(
-        Components.interfaces.nsIPrefBranch2);
-    var removeWWW = prefBranch.getBoolPref(this.PREF_REMOVE_WWW);
-    this._selectSubdomain = prefBranch.getBoolPref(this.PREF_SELECT_SUBDOMAIN);
+    Components.utils.import("resource://gre/modules/Services.jsm");
+    var prefs = Application.prefs;
     
     var host = window.arguments[0];
+    var removeWWW = prefs.getValue(this.PREF_REMOVE_WWW, true);
     if (removeWWW && host.indexOf("www.") == 0)
       host = host.substring(4);
+    
+    var selectSub = prefs.getValue(this.PREF_SELECT_SUBDOMAIN, true);
+    var selectionEnd = selectSub ? this._getSelectionEnd(host) : 0;
     
     this._dialog = document.getElementById("cwwb-addsite");
     this._textbox = document.getElementById("cwwb-addsite-textbox");
     this._textbox.value = host;
-    // Without a prior select(), the range setting is overriden
+    // Without a prior select(), the range setting is overridden
     // and the entire text selected when the dialog appears...
     this._textbox.select();
-    this._textbox.setSelectionRange(0, this._getSelectionEnd(host));
+    this._textbox.setSelectionRange(0, selectionEnd);
   }
 }
 

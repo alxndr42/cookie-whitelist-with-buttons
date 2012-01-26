@@ -5,26 +5,8 @@ const CWWB = {
   HIDE_ADD_PREF    : "extensions.cwwb.hide_add_button",
   HIDE_RECORD_PREF : "extensions.cwwb.hide_record_button",
   
-  prefs  : undefined,
   add    : undefined,
   record : undefined,
-  
-  _windowCount : undefined,
-  
-  _countWindows : function() {
-    var mediator =
-      Components.classes["@mozilla.org/appshell/window-mediator;1"].getService(
-        Components.interfaces.nsIWindowMediator);
-    var enumerator = mediator.getEnumerator("navigator:browser");
-    
-    var count = 0;
-    while (enumerator.hasMoreElements()) {
-      enumerator.getNext();
-      count++;
-    }
-    
-    this._windowCount = count;
-  },
   
   showAddDialog : function() {
     window.openDialog(
@@ -65,23 +47,10 @@ const CWWB = {
     this.record.toggle();
   },
   
-  log : function(aMessage) {
-    var console = Components.classes["@mozilla.org/consoleservice;1"].
-	  getService(Components.interfaces.nsIConsoleService);
-    console.logStringMessage(aMessage);
-  },
-  
-  isFirstWindow : function() {
-    return this._windowCount == 1;
-  },
-  
   init : function() {
-    this.prefs =
-      Components.classes["@mozilla.org/preferences-service;1"].getService(
-        Components.interfaces.nsIPrefService);
+    Components.utils.import("resource://gre/modules/Services.jsm");
     this.add = CWWBAddModel;
     this.record = CWWBRecordModel;
-    this._countWindows();
     
     CWWBAddModel.init();
     CWWBRecordModel.init();

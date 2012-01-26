@@ -18,7 +18,6 @@ const CWWBAddModel = {
   nsISWR : Components.interfaces.nsISupportsWeakReference,
   nsIS   : Components.interfaces.nsISupports,
   
-  _permManager : undefined,
   _currentHost : null,
   _currentPerm : null,
   _state       : this.STATE_UNKNOWN,
@@ -33,7 +32,7 @@ const CWWBAddModel = {
     
     var perm = null;
     if (host != null)
-      perm = this._permManager.testPermission(uri, "cookie");
+      perm = Services.perms.testPermission(uri, "cookie");
     if (host == this._currentHost && perm == this._currentPerm)
       return;
     
@@ -123,22 +122,13 @@ const CWWBAddModel = {
   },
   
   init : function() {
-    this._permManager =
-      Components.classes["@mozilla.org/permissionmanager;1"].getService(
-        Components.interfaces.nsIPermissionManager);
     this._checkCurrentHost(true);
     
     gBrowser.addProgressListener(this);
-    var obsService =
-      Components.classes["@mozilla.org/observer-service;1"].getService(
-        Components.interfaces.nsIObserverService);
-    obsService.addObserver(this, "perm-changed", false);
+    Services.obs.addObserver(this, "perm-changed", false);
   },
   
   cleanup : function() {
-    var obsService =
-      Components.classes["@mozilla.org/observer-service;1"].getService(
-        Components.interfaces.nsIObserverService);
-    obsService.removeObserver(this, "perm-changed");
+    Services.obs.removeObserver(this, "perm-changed");
   }
 }
