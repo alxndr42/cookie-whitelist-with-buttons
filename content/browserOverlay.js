@@ -2,9 +2,6 @@
 // Released under the terms of the GNU General Public License version 2 or later.
 
 const CWWB = {
-  HIDE_ADD_PREF    : "extensions.cwwb.hide_add_button",
-  HIDE_RECORD_PREF : "extensions.cwwb.hide_record_button",
-  
   add    : undefined,
   record : undefined,
   
@@ -49,6 +46,7 @@ const CWWB = {
   
   init : function() {
     Components.utils.import("resource://gre/modules/Services.jsm");
+    
     this.add = CWWBAddModel;
     this.record = CWWBRecordModel;
     

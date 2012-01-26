@@ -10,8 +10,6 @@
   <prefpane>
     <preferences>
       <preference id="pref-accept-third-party" name="extensions.cwwb.accept_third_party" type="bool"/>
-      <preference id="pref-hide-add-button" name="extensions.cwwb.hide_add_button" type="bool"/>
-      <preference id="pref-hide-record-button" name="extensions.cwwb.hide_record_button" type="bool"/>
       <preference id="pref-rec-button-startup" name="extensions.cwwb.record_button_startup" type="int"/>
     </preferences>
     
@@ -31,8 +29,6 @@
     
     <groupbox>
       <caption label="&appearance.group;"/>
-      <checkbox label="&hideAdd.label;" preference="pref-hide-add-button"/>
-      <checkbox label="&hideRecord.label;" preference="pref-hide-record-button"/>
     </groupbox>
   </prefpane>
 </prefwindow>
