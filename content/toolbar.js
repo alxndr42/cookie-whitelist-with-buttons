@@ -2,7 +2,36 @@
 // Released under the terms of the GNU General Public License version 2 or later.
 
 const CWWBToolbar = {
-  _props   : undefined,
+  TOOLBAR_BUTTONS_PREF   : "extensions.cwwb.toolbar_buttons",
+  TOOLBAR_BUTTONS_BOTH   : 0, // show both buttons
+  TOOLBAR_BUTTONS_RECORD : 1, // show record button
+  TOOLBAR_BUTTONS_ADD    : 2, // show add button
+  
+  _prefs : undefined,
+  _props : undefined,
+  
+  _updateVisibility : function() {
+    var add = document.getElementById("cwwb-toolbar-add");
+    var record = document.getElementById("cwwb-toolbar-record");
+    if (!add || !record)
+      return;
+    
+    var buttons = this._prefs.getValue(this.TOOLBAR_BUTTONS_PREF, this.TOOLBAR_BUTTONS_BOTH);
+    switch (buttons) {
+      case this.TOOLBAR_BUTTONS_RECORD:
+        record.setAttribute("hidden", false);
+        add.setAttribute("hidden", true);
+        break;
+      case this.TOOLBAR_BUTTONS_ADD:
+        record.setAttribute("hidden", true);
+        add.setAttribute("hidden", false);
+        break;
+      default:
+        record.setAttribute("hidden", false);
+        add.setAttribute("hidden", false);
+        break;
+    }
+  },
   
   _updateAdd : function() {
     var button = document.getElementById("cwwb-toolbar-add");
@@ -47,7 +76,14 @@ const CWWBToolbar = {
     }
   },
   
+  handleEvent : function(aEvent) {
+    var data = aEvent.data;
+    if (data == this.TOOLBAR_BUTTONS_PREF)
+      this._updateVisibility();
+  },
+  
   updateAll : function() {
+    this._updateVisibility();
     this._updateAdd();
     this._updateRecord();
   },
@@ -61,9 +97,11 @@ const CWWBToolbar = {
   },
   
   init : function() {
+    this._prefs = Application.prefs;
     this._props = document.getElementById("cwwb-properties");
     this.updateAll();
     
+    this._prefs.events.addListener("change", this);
     var toolbox = document.getElementById("navigator-toolbox");
     toolbox.addEventListener("customizationchange", function() { CWWBToolbar.updateAll(); });
     CWWB.add.addListener(this);
@@ -71,5 +109,6 @@ const CWWBToolbar = {
   },
   
   cleanup : function() {
+    this._prefs.events.removeListener("change", this);
   }
 };

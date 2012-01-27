@@ -1,17 +1,21 @@
-<!ENTITY  extension.title      "Cookie Whitelist, With Buttons">
-<!ENTITY  whitelist.label      "Whitelist">
-<!ENTITY  cookies.label        "Cookies">
-<!ENTITY  add.title            "Add to Whitelist">
-<!ENTITY  allow.label          "Allow">
-<!ENTITY  allow.access         "A">
-<!ENTITY  session.label        "Allow for Session">
-<!ENTITY  session.access       "S">
-<!ENTITY  cancel.label         "Cancel">
-<!ENTITY  cancel.access        "C">
-<!ENTITY  main.group           "Main">
-<!ENTITY  acceptAll.label      "Accept third-party cookies">
-<!ENTITY  recordStartup.label  "When Firefox starts:">
-<!ENTITY  recordStartup.off    "Turn the Cookie button off">
-<!ENTITY  recordStartup.on     "Turn the Cookie button on">
-<!ENTITY  recordStartup.last   "Leave the Cookie button unchanged">
-<!ENTITY  appearance.group     "Appearance">
+<!ENTITY  extension.title       "Cookie Whitelist, With Buttons">
+<!ENTITY  whitelist.label       "Whitelist">
+<!ENTITY  cookies.label         "Cookies">
+<!ENTITY  add.title             "Add to Whitelist">
+<!ENTITY  allow.label           "Allow">
+<!ENTITY  allow.access          "A">
+<!ENTITY  session.label         "Allow for Session">
+<!ENTITY  session.access        "S">
+<!ENTITY  cancel.label          "Cancel">
+<!ENTITY  cancel.access         "C">
+<!ENTITY  main.group            "Options">
+<!ENTITY  acceptAll.label       "Accept third-party cookies">
+<!ENTITY  recordStartup.label   "When Firefox starts:">
+<!ENTITY  recordStartup.off     "Turn the Cookie button off">
+<!ENTITY  recordStartup.on      "Turn the Cookie button on">
+<!ENTITY  recordStartup.last    "Leave the Cookie button unchanged">
+<!ENTITY  appearance.group      "Appearance">
+<!ENTITY  toolbarButtons.label  "Toolbar buttons:">
+<!ENTITY  toolbarButtons.both   "Show both buttons">
+<!ENTITY  toolbarButtons.record "Show the Cookie button">
+<!ENTITY  toolbarButtons.add    "Show the Whitelist button">
