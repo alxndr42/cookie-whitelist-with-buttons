@@ -5,6 +5,11 @@ const CWWB = {
   add    : undefined,
   record : undefined,
   
+  _updateContextMenu : function() {
+    var acceptAll = document.getElementById("cwwb-context-accept-all");
+    acceptAll.setAttribute("checked", this.record.isAcceptAll());
+  },
+  
   showAddDialog : function() {
     window.openDialog(
       "chrome://cwwb/content/dialog/addSite.xul",
@@ -40,8 +45,16 @@ const CWWB = {
       null);
   },
   
+  toggleAcceptAll : function() {
+    this.record.toggleAcceptAll();
+  },
+  
   toggleRecord : function() {
     this.record.toggle();
+  },
+  
+  modelUpdate : function(aModel) {
+    this._updateContextMenu();
   },
   
   init : function() {
@@ -53,6 +66,9 @@ const CWWB = {
     CWWBAddModel.init();
     CWWBRecordModel.init();
     CWWBToolbar.init();
+    
+    this.record.addListener(this);
+    this._updateContextMenu();
   },
   
   cleanup : function() {

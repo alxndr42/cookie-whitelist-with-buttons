@@ -89,8 +89,8 @@ const CWWBRecordModel = {
     return this._acceptAll;
   },
   
-  setAcceptAll : function(aAcceptAll) {
-    this._prefs.setValue(this.THIRD_PARTY_PREF, aAcceptAll);
+  toggleAcceptAll : function() {
+    this._prefs.setValue(this.THIRD_PARTY_PREF, !this._acceptAll);
   },
   
   handleEvent : function(aEvent) {
