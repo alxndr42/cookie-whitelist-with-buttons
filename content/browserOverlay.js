@@ -17,6 +17,13 @@ const CWWB = {
     if (installed)
       return;
     
+    // if CWWB is already in the browser, mark it as installed
+    var cwwb = document.getElementById("cwwb-toolbar");
+    if (cwwb) {
+      Application.prefs.setValue(this.TOOLBAR_INSTALL_PREF, true);
+      return;
+    }
+    
     var toolbar = document.getElementById("nav-bar");
     if (!toolbar)
       return;
@@ -26,6 +33,7 @@ const CWWB = {
       toolbar.setAttribute("currentset", toolbar.currentSet);
       document.persist(toolbar.id, "currentset");
       Application.prefs.setValue(this.TOOLBAR_INSTALL_PREF, true);
+      CWWBToolbar.updateAll();
     } catch (e) {
       Application.console.log("Error during toolbar install: " + e);
     }
