@@ -2,12 +2,33 @@
 // Released under the terms of the GNU General Public License version 2 or later.
 
 const CWWB = {
+  TOOLBAR_INSTALL_PREF : "extensions.cwwb.toolbar_install",
+  
   add    : undefined,
   record : undefined,
   
   _updateContextMenu : function() {
     var acceptAll = document.getElementById("cwwb-context-accept-all");
     acceptAll.setAttribute("checked", this.record.isAcceptAll());
+  },
+  
+  _checkToolbarInstall : function() {
+    var installed = Application.prefs.getValue(this.TOOLBAR_INSTALL_PREF, false);
+    if (installed)
+      return;
+    
+    var toolbar = document.getElementById("nav-bar");
+    if (!toolbar)
+      return;
+    
+    try {
+      toolbar.insertItem("cwwb-toolbar");
+      toolbar.setAttribute("currentset", toolbar.currentSet);
+      document.persist(toolbar.id, "currentset");
+      Application.prefs.setValue(this.TOOLBAR_INSTALL_PREF, true);
+    } catch (e) {
+      Application.console.log("Error during toolbar install: " + e);
+    }
   },
   
   showAddDialog : function() {
@@ -69,6 +90,7 @@ const CWWB = {
     
     this.record.addListener(this);
     this._updateContextMenu();
+    this._checkToolbarInstall();
   },
   
   cleanup : function() {
