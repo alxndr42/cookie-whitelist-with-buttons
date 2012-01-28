@@ -1,6 +1,11 @@
 <?xml version="1.0"?>
 <!DOCTYPE window SYSTEM "chrome://cwwb/locale/cwwb.dtd">
 
+<!--
+Copyright 2008 Alexander Dietrich <alexander@dietrich.cx>
+Released under the terms of the GNU General Public License version 2 or later.
+-->
+
 <overlay
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
   id="cwwb-browser-overlay">
