@@ -103,7 +103,7 @@ const CWWBToolbar = {
     
     this._prefs.events.addListener("change", this);
     var toolbox = document.getElementById("navigator-toolbox");
-    toolbox.addEventListener("customizationchange", function() { CWWBToolbar.updateAll(); });
+    toolbox.addEventListener("customizationchange", function() { CWWBToolbar.updateAll(); }, false);
     CWWB.add.addListener(this);
     CWWB.record.addListener(this);
   },
