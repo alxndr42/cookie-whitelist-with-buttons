@@ -26,15 +26,18 @@ if (!cwwb) var cwwb = {};
     listeners.forEach(function (listener) { listener(); });
   };
 
+  var enforceLifetime = function () {
+    if (lifetime !== LIFETIME_SESSION) {
+      prefs.setValue(LIFETIME_PREF, LIFETIME_SESSION);
+    }
+  };
+
   var setBehavior = function (aBehavior) {
     if (behavior === aBehavior) {
       return;
     }
 
-    if (lifetime !== LIFETIME_SESSION) {
-      prefs.setValue(LIFETIME_PREF, LIFETIME_SESSION);
-    }
-
+    enforceLifetime();
     prefs.setValue(BEHAVIOR_PREF, aBehavior);
   };
 
@@ -107,6 +110,7 @@ if (!cwwb) var cwwb = {};
         data === LIFETIME_PREF ||
         data === THIRD_PARTY_PREF) {
       syncPrefs();
+      enforceLifetime();
       enforceThirdParty();
       notifyListeners();
     }
