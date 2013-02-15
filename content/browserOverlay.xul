@@ -23,8 +23,8 @@ Released under the terms of the GNU General Public License version 2 or later.
     <command id="cwwb-cmd-show-add-dialog" oncommand="cwwb.showAddDialog();"/>
     <command id="cwwb-cmd-show-cookies" oncommand="cwwb.showCookies();"/>
     <command id="cwwb-cmd-show-whitelist" oncommand="cwwb.showWhitelist();"/>
-    <command id="cwwb-cmd-toggle-third-party" oncommand="cwwb.toggleThirdParty();"/>
     <command id="cwwb-cmd-toggle-cookie-mode" oncommand="cwwb.toggleCookieMode();"/>
+    <command id="cwwb-cmd-toggle-third-party" oncommand="cwwb.toggleThirdParty();"/>
   </commandset>
 
   <popupset>

@@ -43,6 +43,11 @@ if (!cwwb) var cwwb = {};
   };
 
   cwwb.showAddDialog = function () {
+    var model = cwwb.AddModel;
+    if (model.getState() !== model.STATE_UNLISTED) {
+      return;
+    }
+
     window.openDialog(
       "chrome://cwwb/content/dialog/addSite.xul",
       "_blank",
