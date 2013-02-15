@@ -24,7 +24,7 @@ Released under the terms of the GNU General Public License version 2 or later.
     <command id="cwwb-cmd-show-cookies" oncommand="cwwb.showCookies();"/>
     <command id="cwwb-cmd-show-whitelist" oncommand="cwwb.showWhitelist();"/>
     <command id="cwwb-cmd-toggle-third-party" oncommand="cwwb.toggleThirdParty();"/>
-    <command id="cwwb-cmd-toggle-record" oncommand="cwwb.toggleRecord();"/>
+    <command id="cwwb-cmd-toggle-cookie-mode" oncommand="cwwb.toggleCookieMode();"/>
   </commandset>
 
   <popupset>
@@ -49,7 +49,7 @@ Released under the terms of the GNU General Public License version 2 or later.
       <toolbarbutton
         id="cwwb-toolbar-record"
         label="&cookies.label;"
-        command="cwwb-cmd-toggle-record"
+        command="cwwb-cmd-toggle-cookie-mode"
         class="toolbarbutton-1"/>
       <toolbarbutton
         id="cwwb-toolbar-add"

@@ -89,7 +89,7 @@ if (!cwwb) var cwwb = {};
     return behavior;
   };
 
-  var toggle = function () {
+  var toggleBehavior = function () {
     setState(behavior === BEHAVIOR_REJECT);
   };
 
@@ -129,7 +129,7 @@ if (!cwwb) var cwwb = {};
     BEHAVIOR_REJECT : BEHAVIOR_REJECT,
     addListener : addListener,
     getBehavior : getBehavior,
-    toggle : toggle,
+    toggleBehavior : toggleBehavior,
     isThirdParty : isThirdParty,
     toggleThirdParty : toggleThirdParty,
     handleEvent : handleEvent,

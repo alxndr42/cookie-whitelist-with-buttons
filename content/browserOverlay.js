@@ -81,8 +81,8 @@ if (!cwwb) var cwwb = {};
     record.toggleThirdParty();
   };
 
-  cwwb.toggleRecord = function () {
-    record.toggle();
+  cwwb.toggleCookieMode = function () {
+    record.toggleBehavior();
   };
 
   cwwb.init = function () {
