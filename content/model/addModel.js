@@ -1,134 +1,158 @@
 // Copyright 2008 Alexander Dietrich <alexander@dietrich.cx>
 // Released under the terms of the GNU General Public License version 2 or later.
 
-const CWWBAddModel = {
-  STATE_UNLISTED          : 0,
-  STATE_WHITELIST         : 1,
-  STATE_WHITELIST_SESSION : 2,
-  STATE_BLACKLIST         : 3,
-  STATE_UNKNOWN           : 4,
-  
-  PERM_DEFAULT : Components.interfaces.nsICookiePermission.ACCESS_DEFAULT,
-  PERM_ALLOW   : Components.interfaces.nsICookiePermission.ACCESS_ALLOW,
-  PERM_DENY    : Components.interfaces.nsICookiePermission.ACCESS_DENY,
-  PERM_SESSION : Components.interfaces.nsICookiePermission.ACCESS_SESSION,
-  
-  nsIP   : Components.interfaces.nsIPermission,
-  nsIWPL : Components.interfaces.nsIWebProgressListener,
-  nsISWR : Components.interfaces.nsISupportsWeakReference,
-  nsIS   : Components.interfaces.nsISupports,
-  
-  _currentHost : null,
-  _currentPerm : null,
-  _state       : this.STATE_UNKNOWN,
-  _listeners   : [],
-  
-  // Checks the current host's permission
-  _checkCurrentHost : function(aForce) {
-    var uri = gBrowser.currentURI;
-    var host = this._filterHost(uri);
-    if (host == this._currentHost && !aForce)
-      return;
-    
-    var perm = null;
-    if (host != null)
-      perm = Services.perms.testPermission(uri, "cookie");
-    if (host == this._currentHost && perm == this._currentPerm)
-      return;
-    
-    this._updateState(host, perm);
-  },
-  
-  // Returns the host of the given HTTP(S) URI, or null
-  _filterHost : function(aURI) {
-    if (aURI == null)
-      return null;
-    
-    if (aURI.schemeIs("http") || aURI.schemeIs("https")) {
-      try {
-        return aURI.host;
-      }
-      catch (e) {
-        return null;
-      }
-    }
-    
-    return null;
-  },
-  
-  _updateState : function(aHost, aPerm) {
-    this._currentHost = aHost;
-    this._currentPerm = aPerm;
-    
+if (!cwwb) var cwwb = {};
+
+(function () {
+  const STATE_UNLISTED          = 0;
+  const STATE_WHITELIST         = 1;
+  const STATE_WHITELIST_SESSION = 2;
+  const STATE_BLACKLIST         = 3;
+  const STATE_UNKNOWN           = 4;
+
+  const PERM_DEFAULT = Components.interfaces.nsICookiePermission.ACCESS_DEFAULT;
+  const PERM_ALLOW   = Components.interfaces.nsICookiePermission.ACCESS_ALLOW;
+  const PERM_DENY    = Components.interfaces.nsICookiePermission.ACCESS_DENY;
+  const PERM_SESSION = Components.interfaces.nsICookiePermission.ACCESS_SESSION;
+
+  const nsIP   = Components.interfaces.nsIPermission;
+  const nsIWPL = Components.interfaces.nsIWebProgressListener;
+  const nsISWR = Components.interfaces.nsISupportsWeakReference;
+  const nsIS   = Components.interfaces.nsISupports;
+
+  var currentHost = null;
+  var currentPerm = null;
+  var state       = STATE_UNKNOWN;
+  var listeners   = [];
+
+  var notifyListeners = function () {
+    listeners.forEach(function (listener) { listener(); });
+  };
+
+  var updateState = function (aHost, aPerm) {
+    currentHost = aHost;
+    currentPerm = aPerm;
+
     switch (aPerm) {
-       case this.PERM_ALLOW:
-        this._state = this.STATE_WHITELIST; 
+       case PERM_ALLOW:
+        state = STATE_WHITELIST;
         break;
-      case this.PERM_DENY:
-        this._state = this.STATE_BLACKLIST
+      case PERM_DENY:
+        state = STATE_BLACKLIST
         break;
-      case this.PERM_SESSION:
-        this._state = this.STATE_WHITELIST_SESSION;
+      case PERM_SESSION:
+        state = STATE_WHITELIST_SESSION;
         break;
       default:
-        if (aHost != null)
-          this._state = this.STATE_UNLISTED;
-        else
-          this._state = this.STATE_UNKNOWN;
+        if (aHost !== null) {
+          state = STATE_UNLISTED;
+        } else {
+          state = STATE_UNKNOWN;
+        }
         break;
     }
-    this._notifyListeners();
-  },
-  
-  _notifyListeners : function() {
-    for each (var listener in this._listeners)
-      listener.modelUpdate(this);
-  },
-  
-  addListener : function(aListener) {
-    this._listeners.push(aListener);
-  },
-  
-  getState : function() {
-    return this._state;
-  },
-  
-  QueryInterface : function(aIID) {
+
+    notifyListeners();
+  };
+
+  // Checks the current host's permission
+  var checkCurrentHost = function (aForce) {
+    var uri = gBrowser.currentURI;
+    var host = filterHost(uri);
+    if (host === currentHost && !aForce) {
+      return;
+    }
+
+    var perm = null;
+    if (host !== null) {
+      perm = Services.perms.testPermission(uri, "cookie");
+    }
+    if (host === currentHost && perm === currentPerm) {
+      return;
+    }
+
+    updateState(host, perm);
+  };
+
+  // Returns the host of the given HTTP(S) URI, or null
+  var filterHost = function (aURI) {
+    var host = null;
+    if (aURI && (aURI.schemeIs("http") || aURI.schemeIs("https"))) {
+      try {
+        host = aURI.host;
+      }
+      catch (e) {
+        // ignore and return null
+      }
+    }
+    return host;
+  };
+
+  var addListener = function (aListener) {
+    listeners.push(aListener);
+  };
+
+  var getState = function () {
+    return state;
+  };
+
+  var QueryInterface = function (aIID) {
     if (
-      aIID.equals(this.nsIWPL) ||
-      aIID.equals(this.nsISWR) ||
-      aIID.equals(this.nsIS))
+      aIID.equals(nsIWPL) ||
+      aIID.equals(nsISWR) ||
+      aIID.equals(nsIS)) {
         return this;
-    
+    }
+
     throw Components.results.NS_NOINTERFACE;
-  },
-  
-  onLocationChange : function() {
-    this._checkCurrentHost(false);
-  },
-  
-  onProgressChange : function() {},
-  onStateChange : function() {},
-  onStatusChange : function() {},
-  onSecurityChange : function() {},
-  
-  observe : function (aSubject, aTopic, aData) {
-    if (aTopic != "perm-changed")
+  };
+
+  var onLocationChange = function () {
+    checkCurrentHost(false);
+  };
+
+  var onProgressChange = function () {};
+  var onStateChange = function () {};
+  var onStatusChange = function () {};
+  var onSecurityChange = function () {};
+
+  var observe = function (aSubject, aTopic, aData) {
+    if (aTopic !== "perm-changed") {
       return;
-    if (!(aSubject instanceof this.nsIP) || aSubject.type != "cookie")
+    }
+    if (!(aSubject instanceof nsIP) || aSubject.type !== "cookie") {
       return;
-    
-    this._checkCurrentHost(true);
-  },
-  
-  init : function() {
-    this._checkCurrentHost(true);
-    
+    }
+
+    checkCurrentHost(true);
+  };
+
+  var init = function () {
+    checkCurrentHost(true);
     gBrowser.addProgressListener(this);
     Services.obs.addObserver(this, "perm-changed", false);
-  },
-  
-  cleanup : function() {
+  };
+
+  var cleanup = function () {
     Services.obs.removeObserver(this, "perm-changed");
-  }
-}
+  };
+
+  cwwb.AddModel = {
+    STATE_UNLISTED : STATE_UNLISTED,
+    STATE_WHITELIST : STATE_WHITELIST,
+    STATE_WHITELIST_SESSION : STATE_WHITELIST_SESSION,
+    STATE_BLACKLIST : STATE_BLACKLIST,
+    STATE_UNKNOWN : STATE_UNKNOWN,
+    addListener : addListener,
+    getState : getState,
+    QueryInterface : QueryInterface,
+    onLocationChange : onLocationChange,
+    onProgressChange : onProgressChange,
+    onStateChange : onStateChange,
+    onStatusChange : onStatusChange,
+    onSecurityChange : onSecurityChange,
+    observe : observe,
+    init : init,
+    cleanup : cleanup
+  };
+}());

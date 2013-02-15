@@ -1,118 +1,139 @@
 // Copyright 2008 Alexander Dietrich <alexander@dietrich.cx>
 // Released under the terms of the GNU General Public License version 2 or later.
 
-const CWWBRecordModel = {
-  BEHAVIOR_PREF       : "network.cookie.cookieBehavior",
-  BEHAVIOR_ACCEPT_ALL : 0, // accept cookies from everyone
-  BEHAVIOR_ACCEPT     : 1, // accept cookies from original site only
-  BEHAVIOR_REJECT     : 2, // reject cookies
-  LIFETIME_PREF       : "network.cookie.lifetimePolicy",
-  LIFETIME_SESSION    : 2, // accept cookies for session
-  STARTUP_STATE_PREF  : "extensions.cwwb.record_button_startup",
-  STARTUP_STATE_OFF   : 0,
-  STARTUP_STATE_ON    : 1,
-  STARTUP_STATE_LAST  : 2,
-  THIRD_PARTY_PREF    : "extensions.cwwb.accept_third_party",
-  
-  _prefs     : undefined,
-  _behavior  : undefined,
-  _lifetime  : undefined,
-  _acceptAll : undefined,
-  _listeners : [],
-  
-  _setBehavior : function(aBehavior) {
-    if (this._behavior == aBehavior)
+if (!cwwb) var cwwb = {};
+
+(function () {
+  const BEHAVIOR_PREF       = "network.cookie.cookieBehavior";
+  const BEHAVIOR_ACCEPT_ALL = 0; // accept cookies from everyone
+  const BEHAVIOR_ACCEPT     = 1; // accept cookies from original site only
+  const BEHAVIOR_REJECT     = 2; // reject cookies
+  const LIFETIME_PREF       = "network.cookie.lifetimePolicy";
+  const LIFETIME_SESSION    = 2; // accept cookies for session
+  const STARTUP_STATE_PREF  = "extensions.cwwb.record_button_startup";
+  const STARTUP_STATE_OFF   = 0;
+  const STARTUP_STATE_ON    = 1;
+  const STARTUP_STATE_LAST  = 2;
+  const THIRD_PARTY_PREF    = "extensions.cwwb.accept_third_party";
+
+  var prefs     = undefined;
+  var behavior  = undefined;
+  var lifetime  = undefined;
+  var acceptAll = undefined;
+  var listeners = [];
+
+  var notifyListeners = function () {
+    listeners.forEach(function (listener) { listener(); });
+  };
+
+  var setBehavior = function (aBehavior) {
+    if (behavior === aBehavior) {
       return;
-    
-    if (this._lifetime != this.LIFETIME_SESSION)
-      this._prefs.setValue(this.LIFETIME_PREF, this.LIFETIME_SESSION);
-    
-    this._prefs.setValue(this.BEHAVIOR_PREF, aBehavior);
-  },
-  
-  _setState : function(aRecordOn) {
+    }
+
+    if (lifetime !== LIFETIME_SESSION) {
+      prefs.setValue(LIFETIME_PREF, LIFETIME_SESSION);
+    }
+
+    prefs.setValue(BEHAVIOR_PREF, aBehavior);
+  };
+
+  var setState = function (aRecordOn) {
     if (aRecordOn) {
-      if (this._acceptAll)
-        this._setBehavior(this.BEHAVIOR_ACCEPT_ALL);
-      else
-        this._setBehavior(this.BEHAVIOR_ACCEPT);
+      if (acceptAll) {
+        setBehavior(BEHAVIOR_ACCEPT_ALL);
+      } else {
+        setBehavior(BEHAVIOR_ACCEPT);
+      }
     }
     else {
-      this._setBehavior(this.BEHAVIOR_REJECT);
+      setBehavior(BEHAVIOR_REJECT);
     }
-  },
-  
-  _setStartupState : function() {
-    if (Application.windows.length > 1)
+  };
+
+  var setStartupState = function () {
+    if (Application.windows.length > 1) {
       return;
-    
-    var startupState = this._prefs.getValue(this.STARTUP_STATE_PREF, this.STARTUP_STATE_OFF);
-    if (startupState == this.STARTUP_STATE_LAST)
+    }
+
+    var startupState = prefs.getValue(STARTUP_STATE_PREF, STARTUP_STATE_OFF);
+    if (startupState === STARTUP_STATE_LAST) {
       return;
-    
-    var recordOn = (startupState == this.STARTUP_STATE_ON);
-    this._setState(recordOn);
-  },
-  
-  _enforceThirdPartyPref : function() {
-    if (this._acceptAll && this._behavior == this.BEHAVIOR_ACCEPT)
-      this._setBehavior(this.BEHAVIOR_ACCEPT_ALL);
-    else
-    if (!this._acceptAll && this._behavior == this.BEHAVIOR_ACCEPT_ALL)
-      this._setBehavior(this.BEHAVIOR_ACCEPT);
-  },
-  
-  _syncPrefs : function() {
-    this._behavior = this._prefs.getValue(this.BEHAVIOR_PREF, this.BEHAVIOR_REJECT);
-    this._lifetime = this._prefs.getValue(this.LIFETIME_PREF, this.LIFETIME_SESSION);
-    this._acceptAll = this._prefs.getValue(this.THIRD_PARTY_PREF, false);
-  },
-  
-  _notifyListeners : function() {
-    for each (var listener in this._listeners)
-      listener.modelUpdate(this);
-  },
-  
-  addListener : function(aListener) {
-    this._listeners.push(aListener);
-  },
-  
-  getBehavior : function() {
-    return this._behavior;
-  },
-  
-  toggle : function() {
-    this._setState(this._behavior == this.BEHAVIOR_REJECT);
-  },
-  
-  isAcceptAll : function() {
-    return this._acceptAll;
-  },
-  
-  toggleAcceptAll : function() {
-    this._prefs.setValue(this.THIRD_PARTY_PREF, !this._acceptAll);
-  },
-  
-  handleEvent : function(aEvent) {
+    }
+
+    var recordOn = (startupState === STARTUP_STATE_ON);
+    setState(recordOn);
+  };
+
+  var enforceThirdPartyPref = function () {
+    if (acceptAll && behavior === BEHAVIOR_ACCEPT) {
+      setBehavior(BEHAVIOR_ACCEPT_ALL);
+    } else {
+      if (!acceptAll && behavior === BEHAVIOR_ACCEPT_ALL) {
+        setBehavior(BEHAVIOR_ACCEPT);
+      }
+    }
+  };
+
+  var syncPrefs = function () {
+    behavior = prefs.getValue(BEHAVIOR_PREF, BEHAVIOR_REJECT);
+    lifetime = prefs.getValue(LIFETIME_PREF, LIFETIME_SESSION);
+    acceptAll = prefs.getValue(THIRD_PARTY_PREF, false);
+  };
+
+  var addListener = function (aListener) {
+    listeners.push(aListener);
+  };
+
+  var getBehavior = function () {
+    return behavior;
+  };
+
+  var toggle = function () {
+    setState(behavior === BEHAVIOR_REJECT);
+  };
+
+  var isAcceptAll = function () {
+    return acceptAll;
+  };
+
+  var toggleAcceptAll = function () {
+    prefs.setValue(THIRD_PARTY_PREF, !acceptAll);
+  };
+
+  var handleEvent = function (aEvent) {
     var data = aEvent.data;
-    if (data == this.BEHAVIOR_PREF ||
-        data == this.LIFETIME_PREF ||
-        data == this.THIRD_PARTY_PREF) {
-      this._syncPrefs();
-      this._enforceThirdPartyPref();
-      this._notifyListeners();
+    if (data === BEHAVIOR_PREF ||
+        data === LIFETIME_PREF ||
+        data === THIRD_PARTY_PREF) {
+      syncPrefs();
+      enforceThirdPartyPref();
+      notifyListeners();
     }
-  },
-  
-  init : function() {
-    this._prefs = Application.prefs;
-    this._prefs.events.addListener("change", this);
-    
-    this._syncPrefs();
-    this._setStartupState();
-  },
-  
-  cleanup : function() {
-    this._prefs.events.removeListener("change", this);
-  }
-};
+  };
+
+  var init = function () {
+    prefs = Application.prefs;
+    prefs.events.addListener("change", this);
+    syncPrefs();
+    setStartupState();
+  };
+
+  var cleanup = function () {
+    prefs.events.removeListener("change", this);
+  };
+
+  cwwb.RecordModel = {
+    BEHAVIOR_ACCEPT_ALL : BEHAVIOR_ACCEPT_ALL,
+    BEHAVIOR_ACCEPT : BEHAVIOR_ACCEPT,
+    BEHAVIOR_REJECT : BEHAVIOR_REJECT,
+    addListener : addListener,
+    getBehavior : getBehavior,
+    toggle : toggle,
+    isAcceptAll : isAcceptAll,
+    toggleAcceptAll : toggleAcceptAll,
+    handleEvent : handleEvent,
+    init : init,
+    cleanup : cleanup
+  };
+}());
