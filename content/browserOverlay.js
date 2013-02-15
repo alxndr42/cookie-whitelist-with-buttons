@@ -9,8 +9,8 @@ if (!cwwb) var cwwb = {};
   var record = undefined;
 
   var updateContextMenu = function () {
-    var acceptAll = document.getElementById("cwwb-context-accept-all");
-    acceptAll.setAttribute("checked", record.isAcceptAll());
+    var thirdParty = document.getElementById("cwwb-context-third-party");
+    thirdParty.setAttribute("checked", record.isThirdParty());
   };
 
   var checkToolbarInstall = function () {
@@ -77,8 +77,8 @@ if (!cwwb) var cwwb = {};
       null);
   };
 
-  cwwb.toggleAcceptAll = function () {
-    record.toggleAcceptAll();
+  cwwb.toggleThirdParty = function () {
+    record.toggleThirdParty();
   };
 
   cwwb.toggleRecord = function () {

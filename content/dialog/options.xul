@@ -21,7 +21,7 @@ Released under the terms of the GNU General Public License version 2 or later.
 
     <groupbox>
       <caption label="&main.group;"/>
-      <checkbox label="&acceptAll.label;" preference="pref-accept-third-party"/>
+      <checkbox label="&thirdParty.label;" preference="pref-accept-third-party"/>
       <separator orient="vertical"/>
       <label value="&recordStartup.label;"/>
       <menulist preference="pref-rec-button-startup">

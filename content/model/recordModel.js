@@ -16,11 +16,11 @@ if (!cwwb) var cwwb = {};
   const STARTUP_STATE_LAST  = 2;
   const THIRD_PARTY_PREF    = "extensions.cwwb.accept_third_party";
 
-  var prefs     = undefined;
-  var behavior  = undefined;
-  var lifetime  = undefined;
-  var acceptAll = undefined;
-  var listeners = [];
+  var prefs      = undefined;
+  var behavior   = undefined;
+  var lifetime   = undefined;
+  var thirdParty = undefined;
+  var listeners  = [];
 
   var notifyListeners = function () {
     listeners.forEach(function (listener) { listener(); });
@@ -40,7 +40,7 @@ if (!cwwb) var cwwb = {};
 
   var setState = function (aRecordOn) {
     if (aRecordOn) {
-      if (acceptAll) {
+      if (thirdParty) {
         setBehavior(BEHAVIOR_ACCEPT_ALL);
       } else {
         setBehavior(BEHAVIOR_ACCEPT);
@@ -65,11 +65,11 @@ if (!cwwb) var cwwb = {};
     setState(recordOn);
   };
 
-  var enforceThirdPartyPref = function () {
-    if (acceptAll && behavior === BEHAVIOR_ACCEPT) {
+  var enforceThirdParty = function () {
+    if (thirdParty && behavior === BEHAVIOR_ACCEPT) {
       setBehavior(BEHAVIOR_ACCEPT_ALL);
     } else {
-      if (!acceptAll && behavior === BEHAVIOR_ACCEPT_ALL) {
+      if (!thirdParty && behavior === BEHAVIOR_ACCEPT_ALL) {
         setBehavior(BEHAVIOR_ACCEPT);
       }
     }
@@ -78,7 +78,7 @@ if (!cwwb) var cwwb = {};
   var syncPrefs = function () {
     behavior = prefs.getValue(BEHAVIOR_PREF, BEHAVIOR_REJECT);
     lifetime = prefs.getValue(LIFETIME_PREF, LIFETIME_SESSION);
-    acceptAll = prefs.getValue(THIRD_PARTY_PREF, false);
+    thirdParty = prefs.getValue(THIRD_PARTY_PREF, false);
   };
 
   var addListener = function (aListener) {
@@ -93,12 +93,12 @@ if (!cwwb) var cwwb = {};
     setState(behavior === BEHAVIOR_REJECT);
   };
 
-  var isAcceptAll = function () {
-    return acceptAll;
+  var isThirdParty = function () {
+    return thirdParty;
   };
 
-  var toggleAcceptAll = function () {
-    prefs.setValue(THIRD_PARTY_PREF, !acceptAll);
+  var toggleThirdParty = function () {
+    prefs.setValue(THIRD_PARTY_PREF, !thirdParty);
   };
 
   var handleEvent = function (aEvent) {
@@ -107,7 +107,7 @@ if (!cwwb) var cwwb = {};
         data === LIFETIME_PREF ||
         data === THIRD_PARTY_PREF) {
       syncPrefs();
-      enforceThirdPartyPref();
+      enforceThirdParty();
       notifyListeners();
     }
   };
@@ -130,8 +130,8 @@ if (!cwwb) var cwwb = {};
     addListener : addListener,
     getBehavior : getBehavior,
     toggle : toggle,
-    isAcceptAll : isAcceptAll,
-    toggleAcceptAll : toggleAcceptAll,
+    isThirdParty : isThirdParty,
+    toggleThirdParty : toggleThirdParty,
     handleEvent : handleEvent,
     init : init,
     cleanup : cleanup

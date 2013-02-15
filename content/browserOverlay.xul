@@ -23,7 +23,7 @@ Released under the terms of the GNU General Public License version 2 or later.
     <command id="cwwb-cmd-show-add-dialog" oncommand="cwwb.showAddDialog();"/>
     <command id="cwwb-cmd-show-cookies" oncommand="cwwb.showCookies();"/>
     <command id="cwwb-cmd-show-whitelist" oncommand="cwwb.showWhitelist();"/>
-    <command id="cwwb-cmd-toggle-accept-all" oncommand="cwwb.toggleAcceptAll();"/>
+    <command id="cwwb-cmd-toggle-third-party" oncommand="cwwb.toggleThirdParty();"/>
     <command id="cwwb-cmd-toggle-record" oncommand="cwwb.toggleRecord();"/>
   </commandset>
 
@@ -33,10 +33,10 @@ Released under the terms of the GNU General Public License version 2 or later.
       <menuitem label="&whitelist.label;" command="cwwb-cmd-show-whitelist"/>
       <menuseparator/>
       <menuitem
-        id="cwwb-context-accept-all"
+        id="cwwb-context-third-party"
         type="checkbox"
-        label="&acceptAll.label;"
-        command="cwwb-cmd-toggle-accept-all"/>
+        label="&thirdParty.label;"
+        command="cwwb-cmd-toggle-third-party"/>
     </menupopup>
   </popupset>
 
