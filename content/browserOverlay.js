@@ -5,6 +5,8 @@ if (!cwwb) var cwwb = {};
 
 (function () {
   const TOOLBAR_INSTALL_PREF = "extensions.cwwb.toolbar_install";
+  const PERM_DEFAULT = Components.interfaces.nsICookiePermission.ACCESS_DEFAULT;
+  const nsIC2 = Components.interfaces.nsICookie2;
 
   var record = undefined;
 
@@ -38,7 +40,33 @@ if (!cwwb) var cwwb = {};
       Application.prefs.setValue(TOOLBAR_INSTALL_PREF, true);
       cwwb.Toolbar.updateAll();
     } catch (e) {
-      Application.console.log("Error during toolbar install: " + e);
+      Application.console.log("CWWB: Error during toolbar install: " + e);
+    }
+  };
+
+  var purgeCookies = function () {
+    var cookies = undefined;
+    var cookie = undefined;
+    var uri = undefined;
+    var perm = undefined;
+    var purge = {};
+
+    cookies = Services.cookies.enumerator;
+    try {
+      while (cookies.hasMoreElements()) {
+        cookie = cookies.getNext().QueryInterface(nsIC2);
+        if (!purge.hasOwnProperty(cookie.rawHost)) {
+          uri = Services.io.newURI("http://" + cookie.rawHost, null, null);
+          perm = Services.perms.testPermission(uri, "cookie");
+          purge[cookie.rawHost] = (perm === PERM_DEFAULT);
+        }
+        if (purge[cookie.rawHost]) {
+          Services.cookies.remove(cookie.host, cookie.name, cookie.path, false);
+        }
+      }
+    }
+    catch (e) {
+      Application.console.log("CWWB: Error while purging cookies: " + e);
     }
   };
 
@@ -87,7 +115,11 @@ if (!cwwb) var cwwb = {};
   };
 
   cwwb.toggleCookieMode = function () {
+    var purge = (record.getBehavior() !== record.BEHAVIOR_REJECT);
     record.toggleBehavior();
+    if (purge && record.isPurgeCookies()) {
+      purgeCookies();
+    }
   };
 
   cwwb.init = function () {

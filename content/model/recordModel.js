@@ -10,17 +10,19 @@ if (!cwwb) var cwwb = {};
   const BEHAVIOR_REJECT     = 2; // reject cookies
   const LIFETIME_PREF       = "network.cookie.lifetimePolicy";
   const LIFETIME_SESSION    = 2; // accept cookies for session
+  const PURGE_COOKIES_PREF  = "extensions.cwwb.purge_cookies";
   const STARTUP_STATE_PREF  = "extensions.cwwb.record_button_startup";
   const STARTUP_STATE_OFF   = 0;
   const STARTUP_STATE_ON    = 1;
   const STARTUP_STATE_LAST  = 2;
   const THIRD_PARTY_PREF    = "extensions.cwwb.accept_third_party";
 
-  var prefs      = undefined;
-  var behavior   = undefined;
-  var lifetime   = undefined;
-  var thirdParty = undefined;
-  var listeners  = [];
+  var prefs        = undefined;
+  var behavior     = undefined;
+  var lifetime     = undefined;
+  var purgeCookies = undefined;
+  var thirdParty   = undefined;
+  var listeners    = [];
 
   var notifyListeners = function () {
     listeners.forEach(function (listener) { listener(); });
@@ -81,6 +83,7 @@ if (!cwwb) var cwwb = {};
   var syncPrefs = function () {
     behavior = prefs.getValue(BEHAVIOR_PREF, BEHAVIOR_REJECT);
     lifetime = prefs.getValue(LIFETIME_PREF, LIFETIME_SESSION);
+    purgeCookies = prefs.getValue(PURGE_COOKIES_PREF, true);
     thirdParty = prefs.getValue(THIRD_PARTY_PREF, false);
   };
 
@@ -96,6 +99,10 @@ if (!cwwb) var cwwb = {};
     setState(behavior === BEHAVIOR_REJECT);
   };
 
+  var isPurgeCookies = function () {
+    return purgeCookies;
+  };
+
   var isThirdParty = function () {
     return thirdParty;
   };
@@ -108,6 +115,7 @@ if (!cwwb) var cwwb = {};
     var data = aEvent.data;
     if (data === BEHAVIOR_PREF ||
         data === LIFETIME_PREF ||
+        data === PURGE_COOKIES_PREF ||
         data === THIRD_PARTY_PREF) {
       syncPrefs();
       enforceLifetime();
@@ -134,6 +142,7 @@ if (!cwwb) var cwwb = {};
     addListener : addListener,
     getBehavior : getBehavior,
     toggleBehavior : toggleBehavior,
+    isPurgeCookies : isPurgeCookies,
     isThirdParty : isThirdParty,
     toggleThirdParty : toggleThirdParty,
     handleEvent : handleEvent,

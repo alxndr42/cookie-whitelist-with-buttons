@@ -10,6 +10,7 @@
 <!ENTITY cancel.access         "C">
 <!ENTITY main.group            "Options">
 <!ENTITY thirdParty.label      "Accept third-party cookies">
+<!ENTITY purgeCookies.label    "Remove unauthorized cookies">
 <!ENTITY recordStartup.label   "When Firefox starts:">
 <!ENTITY recordStartup.off     "Turn the Cookie button off">
 <!ENTITY recordStartup.on      "Turn the Cookie button on">
