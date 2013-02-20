@@ -28,31 +28,23 @@ if (!cwwb) var cwwb = {};
     listeners.forEach(function (listener) { listener(); });
   };
 
-  var enforceLifetime = function () {
-    if (lifetime !== LIFETIME_SESSION) {
-      prefs.setValue(LIFETIME_PREF, LIFETIME_SESSION);
-    }
-  };
-
   var setBehavior = function (aBehavior) {
-    if (behavior === aBehavior) {
-      return;
+    if (behavior !== aBehavior) {
+      prefs.setValue(BEHAVIOR_PREF, aBehavior);
     }
-
-    enforceLifetime();
-    prefs.setValue(BEHAVIOR_PREF, aBehavior);
   };
 
   var setState = function (aRecordOn) {
     if (aRecordOn) {
-      if (thirdParty) {
-        setBehavior(BEHAVIOR_ACCEPT_ALL);
-      } else {
-        setBehavior(BEHAVIOR_ACCEPT);
-      }
-    }
-    else {
+      setBehavior(thirdParty ? BEHAVIOR_ACCEPT_ALL : BEHAVIOR_ACCEPT);
+    } else {
       setBehavior(BEHAVIOR_REJECT);
+    }
+  };
+
+  var setLifetime = function () {
+    if (lifetime !== LIFETIME_SESSION) {
+      prefs.setValue(LIFETIME_PREF, LIFETIME_SESSION);
     }
   };
 
@@ -61,23 +53,14 @@ if (!cwwb) var cwwb = {};
       return;
     }
 
+    setLifetime();
+
     var startupState = prefs.getValue(STARTUP_STATE_PREF, STARTUP_STATE_OFF);
     if (startupState === STARTUP_STATE_LAST) {
       return;
     }
 
-    var recordOn = (startupState === STARTUP_STATE_ON);
-    setState(recordOn);
-  };
-
-  var enforceThirdParty = function () {
-    if (thirdParty && behavior === BEHAVIOR_ACCEPT) {
-      setBehavior(BEHAVIOR_ACCEPT_ALL);
-    } else {
-      if (!thirdParty && behavior === BEHAVIOR_ACCEPT_ALL) {
-        setBehavior(BEHAVIOR_ACCEPT);
-      }
-    }
+    setState(startupState === STARTUP_STATE_ON);
   };
 
   var syncPrefs = function () {
@@ -118,8 +101,8 @@ if (!cwwb) var cwwb = {};
         data === PURGE_COOKIES_PREF ||
         data === THIRD_PARTY_PREF) {
       syncPrefs();
-      enforceLifetime();
-      enforceThirdParty();
+      setLifetime();
+      setState(behavior !== BEHAVIOR_REJECT);
       notifyListeners();
     }
   };
