@@ -4,8 +4,8 @@
 if (!cwwb) var cwwb = {};
 
 (function () {
+  const PREF_REMOVE_WWW = "extensions.cwwb.remove_www";
   const PERM_DEFAULT = Components.interfaces.nsICookiePermission.ACCESS_DEFAULT;
-
   const nsIC2 = Components.interfaces.nsICookie2;
 
   cwwb.Tools = {};
@@ -34,5 +34,19 @@ if (!cwwb) var cwwb = {};
     catch (e) {
       Application.console.log("CWWB: Error while purging cookies: " + e);
     }
+  };
+
+  cwwb.Tools.getCurrentHost = function () {
+    var host = "";
+    var uri = gBrowser.currentURI;
+    var removeWWW = undefined;
+    if (uri && (uri.schemeIs("http") || uri.schemeIs("https"))) {
+      host = gBrowser.currentURI.host;
+      removeWWW = Application.prefs.getValue(PREF_REMOVE_WWW, true);
+      if (removeWWW && host.indexOf("www.") === 0) {
+        host = host.substring(4);
+      }
+    }
+    return host;
   };
 }());

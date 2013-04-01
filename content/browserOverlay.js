@@ -53,7 +53,7 @@ if (!cwwb) var cwwb = {};
       "chrome://cwwb/content/dialog/addSite.xul",
       "_blank",
       "modal,centerscreen",
-      gBrowser.currentURI.host);
+      tools.getCurrentHost());
   };
 
   cwwb.showWhitelist = function () {

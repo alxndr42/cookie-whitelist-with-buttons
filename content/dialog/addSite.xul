@@ -24,6 +24,7 @@ Released under the terms of the GNU General Public License version 2 or later.
   defaultButton="extra1">
 
   <script type="application/x-javascript" src="chrome://cwwb/content/dialog/addSite.js"/>
+  <script type="application/x-javascript" src="chrome://cwwb/content/tools.js"/>
 
   <textbox id="cwwb-addsite-textbox" size="40"/>
 </dialog>
