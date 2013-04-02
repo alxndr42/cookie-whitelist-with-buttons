@@ -5,12 +5,39 @@ if (!cwwb) var cwwb = {};
 
 (function () {
   const PREF_REMOVE_WWW = "extensions.cwwb.remove_www";
+  const PERM_ALLOW   = Components.interfaces.nsICookiePermission.ACCESS_ALLOW;
   const PERM_DEFAULT = Components.interfaces.nsICookiePermission.ACCESS_DEFAULT;
+  const PERM_SESSION = Components.interfaces.nsICookiePermission.ACCESS_SESSION;
   const nsIC2 = Components.interfaces.nsICookie2;
 
-  cwwb.Tools = {};
+  var addPermission = function (host, sessionCookies) {
+    var uri = undefined;
+    var type = sessionCookies ? PERM_SESSION : PERM_ALLOW;
+    try {
+      uri = Services.io.newURI("http://" + host, null, null);
+      Services.perms.add(uri, "cookie", type);
+    }
+    catch (e) {
+      Application.console.log(
+        "CWWB: Error while adding permission for host '" + host + "': " + e);
+    }
+  };
 
-  cwwb.Tools.purgeCookies = function () {
+  var getCurrentHost = function () {
+    var host = "";
+    var uri = gBrowser.currentURI;
+    var removeWWW = undefined;
+    if (uri && (uri.schemeIs("http") || uri.schemeIs("https"))) {
+      host = gBrowser.currentURI.host;
+      removeWWW = Application.prefs.getValue(PREF_REMOVE_WWW, true);
+      if (removeWWW && host.indexOf("www.") === 0) {
+        host = host.substring(4);
+      }
+    }
+    return host;
+  };
+
+  var purgeCookies = function () {
     var cookies = undefined;
     var cookie = undefined;
     var uri = undefined;
@@ -36,17 +63,9 @@ if (!cwwb) var cwwb = {};
     }
   };
 
-  cwwb.Tools.getCurrentHost = function () {
-    var host = "";
-    var uri = gBrowser.currentURI;
-    var removeWWW = undefined;
-    if (uri && (uri.schemeIs("http") || uri.schemeIs("https"))) {
-      host = gBrowser.currentURI.host;
-      removeWWW = Application.prefs.getValue(PREF_REMOVE_WWW, true);
-      if (removeWWW && host.indexOf("www.") === 0) {
-        host = host.substring(4);
-      }
-    }
-    return host;
+  cwwb.Tools = {
+    addPermission : addPermission,
+    getCurrentHost : getCurrentHost,
+    purgeCookies : purgeCookies
   };
 }());

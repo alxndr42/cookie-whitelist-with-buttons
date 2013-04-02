@@ -66,7 +66,7 @@ if (!cwwb) var cwwb = {};
       permissionType : "cookie",
       windowTitle    : properties.getString("whitelist.title"),
       introText      : properties.getString("whitelist.intro")
-    }
+    };
 
     window.openDialog(
       "chrome://browser/content/preferences/permissions.xul",
@@ -98,12 +98,12 @@ if (!cwwb) var cwwb = {};
   cwwb.init = function () {
     Components.utils.import("resource://gre/modules/Services.jsm");
 
-    record = cwwb.RecordModel;
-    tools = cwwb.Tools;
-
     cwwb.AddModel.init();
     cwwb.RecordModel.init();
     cwwb.Toolbar.init();
+
+    record = cwwb.RecordModel;
+    tools = cwwb.Tools;
 
     record.addListener(function () { updateContextMenu(); });
     updateContextMenu();
