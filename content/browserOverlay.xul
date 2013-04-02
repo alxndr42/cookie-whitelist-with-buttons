@@ -14,6 +14,7 @@ Released under the terms of the GNU General Public License version 2 or later.
   <script type="application/x-javascript" src="chrome://cwwb/content/model/addModel.js"/>
   <script type="application/x-javascript" src="chrome://cwwb/content/model/recordModel.js"/>
   <script type="application/x-javascript" src="chrome://cwwb/content/toolbar.js"/>
+  <script type="application/x-javascript" src="chrome://cwwb/content/tools.js"/>
 
   <stringbundleset>
     <stringbundle id="cwwb-properties" src="chrome://cwwb/locale/cwwb.properties"/>

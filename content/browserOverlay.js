@@ -5,10 +5,9 @@ if (!cwwb) var cwwb = {};
 
 (function () {
   const TOOLBAR_INSTALL_PREF = "extensions.cwwb.toolbar_install";
-  const PERM_DEFAULT = Components.interfaces.nsICookiePermission.ACCESS_DEFAULT;
-  const nsIC2 = Components.interfaces.nsICookie2;
 
   var record = undefined;
+  var tools = undefined;
 
   var updateContextMenu = function () {
     var thirdParty = document.getElementById("cwwb-context-third-party");
@@ -44,32 +43,6 @@ if (!cwwb) var cwwb = {};
     }
   };
 
-  var purgeCookies = function () {
-    var cookies = undefined;
-    var cookie = undefined;
-    var uri = undefined;
-    var perm = undefined;
-    var purge = {};
-
-    cookies = Services.cookies.enumerator;
-    try {
-      while (cookies.hasMoreElements()) {
-        cookie = cookies.getNext().QueryInterface(nsIC2);
-        if (!purge.hasOwnProperty(cookie.rawHost)) {
-          uri = Services.io.newURI("http://" + cookie.rawHost, null, null);
-          perm = Services.perms.testPermission(uri, "cookie");
-          purge[cookie.rawHost] = (perm === PERM_DEFAULT);
-        }
-        if (purge[cookie.rawHost]) {
-          Services.cookies.remove(cookie.host, cookie.name, cookie.path, false);
-        }
-      }
-    }
-    catch (e) {
-      Application.console.log("CWWB: Error while purging cookies: " + e);
-    }
-  };
-
   cwwb.showAddDialog = function () {
     var model = cwwb.AddModel;
     if (model.getState() !== model.STATE_UNLISTED) {
@@ -80,7 +53,7 @@ if (!cwwb) var cwwb = {};
       "chrome://cwwb/content/dialog/addSite.xul",
       "_blank",
       "modal,centerscreen",
-      gBrowser.currentURI.host);
+      tools.getCurrentHost());
   };
 
   cwwb.showWhitelist = function () {
@@ -93,7 +66,7 @@ if (!cwwb) var cwwb = {};
       permissionType : "cookie",
       windowTitle    : properties.getString("whitelist.title"),
       introText      : properties.getString("whitelist.intro")
-    }
+    };
 
     window.openDialog(
       "chrome://browser/content/preferences/permissions.xul",
@@ -118,18 +91,28 @@ if (!cwwb) var cwwb = {};
     var purge = (record.getBehavior() !== record.BEHAVIOR_REJECT);
     record.toggleBehavior();
     if (purge && record.isPurgeCookies()) {
-      purgeCookies();
+      tools.purgeCookies();
     }
+  };
+
+  cwwb.allowCookies = function (sessionCookies) {
+    var model = cwwb.AddModel;
+    if (model.getState() !== model.STATE_UNLISTED) {
+      return;
+    }
+
+    tools.addPermission(tools.getCurrentHost(), sessionCookies);
   };
 
   cwwb.init = function () {
     Components.utils.import("resource://gre/modules/Services.jsm");
 
-    record = cwwb.RecordModel;
-
     cwwb.AddModel.init();
     cwwb.RecordModel.init();
     cwwb.Toolbar.init();
+
+    record = cwwb.RecordModel;
+    tools = cwwb.Tools;
 
     record.addListener(function () { updateContextMenu(); });
     updateContextMenu();
