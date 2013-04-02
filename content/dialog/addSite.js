@@ -9,23 +9,21 @@ if (!cwwb) var cwwb = {};
   var dialog  = undefined;
   var textbox = undefined;
 
-  // Attempts to detect the subdomain part of the current host,
-  // for preselection in the textbox.
-  var getSelectionEnd = function () {
-    var selectionEnd = 0;
+  // Returns the length of the subdomain part in the current hostname, or 0.
+  var getSubdomainLength = function () {
+    var length = 0;
+    var baseDomain = undefined;
     var selectSub = Application.prefs.getValue(PREF_SELECT_SUBDOMAIN, true);
-    var parts = textbox.value.split(".");
-    var tld = undefined;
-    var skip = undefined;
-    var i = undefined;
-    if (selectSub && parts.length > 2) {
-      tld = parts[parts.length - 1];
-      skip = tld.length < 3 ? 3 : 2;
-      for (i = parts.length - skip - 1; i >= 0; i--) {
-        selectionEnd += parts[i].length + 1;
+    if (selectSub) {
+      try {
+        baseDomain = Services.eTLD.getBaseDomainFromHost(textbox.value);
+        length = textbox.value.length - baseDomain.length;
+      }
+      catch (e) {
+        // possibly an IP address or "localhost"
       }
     }
-    return selectionEnd;
+    return length;
   };
 
   var allowCookies = function (sessionCookies) {
@@ -45,7 +43,7 @@ if (!cwwb) var cwwb = {};
     // Without a prior select(), the range setting is overridden
     // and the entire text selected when the dialog appears.
     textbox.select();
-    textbox.setSelectionRange(0, getSelectionEnd());
+    textbox.setSelectionRange(0, getSubdomainLength());
   };
 
   cwwb.AddDialog = {
