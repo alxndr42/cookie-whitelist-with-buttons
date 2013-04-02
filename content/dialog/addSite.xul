@@ -15,15 +15,15 @@ Released under the terms of the GNU General Public License version 2 or later.
   buttons="extra1,extra2,cancel"
   buttonlabelextra1="&allow.label;"
   buttonaccesskeyextra1="&allow.access;"
-  ondialogextra1="CWWBAddDialog.onAllow();"
+  ondialogextra1="cwwb.AddDialog.onAllow();"
   buttonlabelextra2="&session.label;"
   buttonaccesskeyextra2="&session.access;"
-  ondialogextra2="CWWBAddDialog.onSession();"
+  ondialogextra2="cwwb.AddDialog.onSession();"
   buttonlabelcancel="&cancel.label;"
   buttonaccesskeycancel="&cancel.access;"
   defaultButton="extra1">
-  
+
   <script type="application/x-javascript" src="chrome://cwwb/content/dialog/addSite.js"/>
-  
+
   <textbox id="cwwb-addsite-textbox" size="40"/>
 </dialog>

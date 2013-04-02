@@ -9,37 +9,37 @@ Released under the terms of the GNU General Public License version 2 or later.
 <overlay
   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
   id="cwwb-browser-overlay">
-  
+
   <script type="application/x-javascript" src="chrome://cwwb/content/browserOverlay.js"/>
   <script type="application/x-javascript" src="chrome://cwwb/content/model/addModel.js"/>
   <script type="application/x-javascript" src="chrome://cwwb/content/model/recordModel.js"/>
   <script type="application/x-javascript" src="chrome://cwwb/content/toolbar.js"/>
-  
+
   <stringbundleset>
     <stringbundle id="cwwb-properties" src="chrome://cwwb/locale/cwwb.properties"/>
   </stringbundleset>
-  
+
   <commandset>
-    <command id="cwwb-cmd-show-add-dialog" oncommand="CWWB.showAddDialog();"/>
-    <command id="cwwb-cmd-show-cookies" oncommand="CWWB.showCookies();"/>
-    <command id="cwwb-cmd-show-whitelist" oncommand="CWWB.showWhitelist();"/>
-    <command id="cwwb-cmd-toggle-accept-all" oncommand="CWWB.toggleAcceptAll();"/>
-    <command id="cwwb-cmd-toggle-record" oncommand="CWWB.toggleRecord();"/>
+    <command id="cwwb-cmd-show-add-dialog" oncommand="cwwb.showAddDialog();"/>
+    <command id="cwwb-cmd-show-cookies" oncommand="cwwb.showCookies();"/>
+    <command id="cwwb-cmd-show-whitelist" oncommand="cwwb.showWhitelist();"/>
+    <command id="cwwb-cmd-toggle-cookie-mode" oncommand="cwwb.toggleCookieMode();"/>
+    <command id="cwwb-cmd-toggle-third-party" oncommand="cwwb.toggleThirdParty();"/>
   </commandset>
-  
+
   <popupset>
     <menupopup id="cwwb-context" position="after_start">
       <menuitem label="&cookies.label;" command="cwwb-cmd-show-cookies"/>
       <menuitem label="&whitelist.label;" command="cwwb-cmd-show-whitelist"/>
       <menuseparator/>
       <menuitem
-        id="cwwb-context-accept-all"
+        id="cwwb-context-third-party"
         type="checkbox"
-        label="&acceptAll.label;"
-        command="cwwb-cmd-toggle-accept-all"/>
+        label="&thirdParty.label;"
+        command="cwwb-cmd-toggle-third-party"/>
     </menupopup>
   </popupset>
-  
+
   <toolbarpalette id="BrowserToolbarPalette">
     <toolbaritem
       id="cwwb-toolbar"
@@ -49,7 +49,7 @@ Released under the terms of the GNU General Public License version 2 or later.
       <toolbarbutton
         id="cwwb-toolbar-record"
         label="&cookies.label;"
-        command="cwwb-cmd-toggle-record"
+        command="cwwb-cmd-toggle-cookie-mode"
         class="toolbarbutton-1"/>
       <toolbarbutton
         id="cwwb-toolbar-add"
