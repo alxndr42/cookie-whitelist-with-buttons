@@ -95,6 +95,15 @@ if (!cwwb) var cwwb = {};
     }
   };
 
+  cwwb.allowCookies = function (sessionCookies) {
+    var model = cwwb.AddModel;
+    if (model.getState() !== model.STATE_UNLISTED) {
+      return;
+    }
+
+    tools.addPermission(tools.getCurrentHost(), sessionCookies);
+  };
+
   cwwb.init = function () {
     Components.utils.import("resource://gre/modules/Services.jsm");
 
