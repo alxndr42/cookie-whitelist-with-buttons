@@ -8,9 +8,38 @@ if (!cwwb) var cwwb = {};
   const TOOLBAR_BUTTONS_BOTH   = 0; // show both buttons
   const TOOLBAR_BUTTONS_RECORD = 1; // show record button
   const TOOLBAR_BUTTONS_ADD    = 2; // show add button
+  const TOOLBAR_INSTALL_PREF   = "extensions.cwwb.toolbar_install";
 
   var prefs = undefined;
   var props = undefined;
+
+  var checkInstall = function () {
+    var installed = Application.prefs.getValue(TOOLBAR_INSTALL_PREF, false);
+    if (installed) {
+      return;
+    }
+
+    // if CWWB is already in the browser, mark it as installed
+    var cwwbToolbar = document.getElementById("cwwb-toolbar");
+    if (cwwbToolbar) {
+      Application.prefs.setValue(TOOLBAR_INSTALL_PREF, true);
+      return;
+    }
+
+    var navBar = document.getElementById("nav-bar");
+    if (!navBar) {
+      return;
+    }
+
+    try {
+      navBar.insertItem("cwwb-toolbar");
+      navBar.setAttribute("currentset", navBar.currentSet);
+      document.persist(navBar.id, "currentset");
+      Application.prefs.setValue(TOOLBAR_INSTALL_PREF, true);
+    } catch (e) {
+      Application.console.log("CWWB: Error during toolbar install: " + e);
+    }
+  };
 
   var updateVisibility = function () {
     var add = document.getElementById("cwwb-toolbar-add");
@@ -79,6 +108,11 @@ if (!cwwb) var cwwb = {};
       button.setAttribute("cwwb-record", "on");
       button.tooltipText = props.getString("recordOn.tooltip");
     }
+
+    var context = document.getElementById("cwwb-context-third-party");
+    if (context) {
+      context.setAttribute("checked", model.isThirdParty());
+    }
   };
 
   var handleEvent = function (aEvent) {
@@ -96,13 +130,16 @@ if (!cwwb) var cwwb = {};
   var init = function() {
     prefs = Application.prefs;
     props = document.getElementById("cwwb-properties");
+    checkInstall();
     updateAll();
 
     prefs.events.addListener("change", this);
-    var toolbox = document.getElementById("navigator-toolbox");
-    toolbox.addEventListener("customizationchange", function () { updateAll(); }, false);
     cwwb.AddModel.addListener(function () { updateAdd(); });
     cwwb.RecordModel.addListener(function () { updateRecord(); });
+    let toolbox = document.getElementById("navigator-toolbox");
+    if (toolbox) {
+      toolbox.addEventListener("customizationchange", function () { updateAll(); }, false);
+    }
   };
 
   var cleanup = function() {
@@ -111,7 +148,6 @@ if (!cwwb) var cwwb = {};
 
   cwwb.Toolbar = {
     handleEvent : handleEvent,
-    updateAll : updateAll,
     init : init,
     cleanup : cleanup
   };

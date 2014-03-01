@@ -4,44 +4,8 @@
 if (!cwwb) var cwwb = {};
 
 (function () {
-  const TOOLBAR_INSTALL_PREF = "extensions.cwwb.toolbar_install";
-
   var record = undefined;
   var tools = undefined;
-
-  var updateContextMenu = function () {
-    var thirdParty = document.getElementById("cwwb-context-third-party");
-    thirdParty.setAttribute("checked", record.isThirdParty());
-  };
-
-  var checkToolbarInstall = function () {
-    var installed = Application.prefs.getValue(TOOLBAR_INSTALL_PREF, false);
-    if (installed) {
-      return;
-    }
-
-    // if CWWB is already in the browser, mark it as installed
-    var cwwbToolbar = document.getElementById("cwwb-toolbar");
-    if (cwwbToolbar) {
-      Application.prefs.setValue(TOOLBAR_INSTALL_PREF, true);
-      return;
-    }
-
-    var navBar = document.getElementById("nav-bar");
-    if (!navBar) {
-      return;
-    }
-
-    try {
-      navBar.insertItem("cwwb-toolbar");
-      navBar.setAttribute("currentset", navBar.currentSet);
-      document.persist(navBar.id, "currentset");
-      Application.prefs.setValue(TOOLBAR_INSTALL_PREF, true);
-      cwwb.Toolbar.updateAll();
-    } catch (e) {
-      Application.console.log("CWWB: Error during toolbar install: " + e);
-    }
-  };
 
   cwwb.showAddDialog = function () {
     var model = cwwb.AddModel;
@@ -113,10 +77,6 @@ if (!cwwb) var cwwb = {};
 
     record = cwwb.RecordModel;
     tools = cwwb.Tools;
-
-    record.addListener(function () { updateContextMenu(); });
-    updateContextMenu();
-    checkToolbarInstall();
   };
 
   cwwb.cleanup = function () {
