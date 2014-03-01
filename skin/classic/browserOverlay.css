@@ -1,25 +1,29 @@
+#cwwb-toolbar-record[cui-areatype="menu-panel"],
+toolbarpaletteitem[place="palette"] > #cwwb-toolbar-record {
+  list-style-image: url("chrome://cwwb/skin/record32-off.png");
+}
+#cwwb-toolbar-record[cui-areatype="menu-panel"][cwwb-record="on"],
+toolbarpaletteitem[place="palette"] > #cwwb-toolbar-record[cwwb-record="on"] {
+  list-style-image: url("chrome://cwwb/skin/record32-on.png");
+}
 #cwwb-toolbar-record {
-  list-style-image: url("chrome://cwwb/skin/record24-off.png");
+  list-style-image: url("chrome://cwwb/skin/record16-off.png");
 }
 #cwwb-toolbar-record[cwwb-record="on"] {
-  list-style-image: url("chrome://cwwb/skin/record24-on.png");
-}
-toolbar[iconsize="small"] #cwwb-toolbar-record {
-  list-style-image: url("chrome://cwwb/skin/record-off.png");
-}
-toolbar[iconsize="small"] #cwwb-toolbar-record[cwwb-record="on"] {
-  list-style-image: url("chrome://cwwb/skin/record-on.png");
+  list-style-image: url("chrome://cwwb/skin/record16-on.png");
 }
 
+#cwwb-toolbar-add[cui-areatype="menu-panel"],
+toolbarpaletteitem[place="palette"] > #cwwb-toolbar-add {
+  list-style-image: url("chrome://cwwb/skin/add32-off.png");
+}
+#cwwb-toolbar-add[cui-areatype="menu-panel"][cwwb-add="on"],
+toolbarpaletteitem[place="palette"] > #cwwb-toolbar-add[cwwb-add="on"] {
+  list-style-image: url("chrome://cwwb/skin/add32-on.png");
+}
 #cwwb-toolbar-add {
-  list-style-image: url("chrome://cwwb/skin/add24-on.png");
+  list-style-image: url("chrome://cwwb/skin/add16-off.png");
 }
-#cwwb-toolbar-add[disabled="true"] {
-  list-style-image: url("chrome://cwwb/skin/add24-off.png");
-}
-toolbar[iconsize="small"] #cwwb-toolbar-add {
-  list-style-image: url("chrome://cwwb/skin/add-on.png");
-}
-toolbar[iconsize="small"] #cwwb-toolbar-add[disabled="true"] {
-  list-style-image: url("chrome://cwwb/skin/add-off.png");
+#cwwb-toolbar-add[cwwb-add="on"] {
+  list-style-image: url("chrome://cwwb/skin/add16-on.png");
 }
