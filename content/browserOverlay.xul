@@ -42,21 +42,17 @@ Released under the terms of the GNU General Public License version 2 or later.
   </popupset>
 
   <toolbarpalette id="BrowserToolbarPalette">
-    <toolbaritem
-      id="cwwb-toolbar"
-      label="&extension.title;"
+    <toolbarbutton
+      id="cwwb-toolbar-record"
+      label="&cookies.label;"
+      command="cwwb-cmd-toggle-cookie-mode"
       context="cwwb-context"
-      class="chromeclass-toolbar-additional">
-      <toolbarbutton
-        id="cwwb-toolbar-record"
-        label="&cookies.label;"
-        command="cwwb-cmd-toggle-cookie-mode"
-        class="toolbarbutton-1"/>
-      <toolbarbutton
-        id="cwwb-toolbar-add"
-        label="&whitelist.label;"
-        command="cwwb-cmd-show-add-dialog"
-        class="toolbarbutton-1"/>
-      </toolbaritem>
+      class="toolbarbutton-1 chromeclass-toolbar-additional"/>
+    <toolbarbutton
+      id="cwwb-toolbar-add"
+      label="&whitelist.label;"
+      command="cwwb-cmd-show-add-dialog"
+      context="cwwb-context"
+      class="toolbarbutton-1 chromeclass-toolbar-additional"/>
   </toolbarpalette>
 </overlay>

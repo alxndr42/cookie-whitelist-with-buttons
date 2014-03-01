@@ -8,10 +8,23 @@ if (!cwwb) var cwwb = {};
   const TOOLBAR_BUTTONS_BOTH   = 0; // show both buttons
   const TOOLBAR_BUTTONS_RECORD = 1; // show record button
   const TOOLBAR_BUTTONS_ADD    = 2; // show add button
-  const TOOLBAR_INSTALL_PREF   = "extensions.cwwb.toolbar_install";
+  const TOOLBAR_INSTALL_PREF   = "extensions.cwwb.toolbar_install_v3";
 
   var prefs = undefined;
   var props = undefined;
+  var cui = undefined;
+
+  var getButton = function (id) {
+    var button = undefined;
+    var wrapper = cui.getWidget(id);
+    if (wrapper && wrapper.isGroup) {
+      wrapper = wrapper.forWindow(window);
+    }
+    if (wrapper) {
+      button = wrapper.node;
+    }
+    return button;
+  };
 
   var checkInstall = function () {
     var installed = Application.prefs.getValue(TOOLBAR_INSTALL_PREF, false);
@@ -19,22 +32,9 @@ if (!cwwb) var cwwb = {};
       return;
     }
 
-    // if CWWB is already in the browser, mark it as installed
-    var cwwbToolbar = document.getElementById("cwwb-toolbar");
-    if (cwwbToolbar) {
-      Application.prefs.setValue(TOOLBAR_INSTALL_PREF, true);
-      return;
-    }
-
-    var navBar = document.getElementById("nav-bar");
-    if (!navBar) {
-      return;
-    }
-
     try {
-      navBar.insertItem("cwwb-toolbar");
-      navBar.setAttribute("currentset", navBar.currentSet);
-      document.persist(navBar.id, "currentset");
+      cui.addWidgetToArea("cwwb-toolbar-record", cui.AREA_NAVBAR);
+      cui.addWidgetToArea("cwwb-toolbar-add", cui.AREA_NAVBAR);
       Application.prefs.setValue(TOOLBAR_INSTALL_PREF, true);
     } catch (e) {
       Application.console.log("CWWB: Error during toolbar install: " + e);
@@ -42,8 +42,8 @@ if (!cwwb) var cwwb = {};
   };
 
   var updateVisibility = function () {
-    var add = document.getElementById("cwwb-toolbar-add");
-    var record = document.getElementById("cwwb-toolbar-record");
+    var add = getButton("cwwb-toolbar-add");
+    var record = getButton("cwwb-toolbar-record");
     if (!add || !record) {
       return;
     }
@@ -66,7 +66,7 @@ if (!cwwb) var cwwb = {};
   };
 
   var updateAdd = function () {
-    var button = document.getElementById("cwwb-toolbar-add");
+    var button = getButton("cwwb-toolbar-add");
     if (!button) {
       return;
     }
@@ -74,9 +74,11 @@ if (!cwwb) var cwwb = {};
     var model = cwwb.AddModel;
     if (model.getState() === model.STATE_UNLISTED) {
       button.disabled = false;
+      button.setAttribute("cwwb-add", "on");
       button.tooltipText = props.getString("addButtonUnlisted.tooltip");
     } else {
       button.disabled = true;
+      button.setAttribute("cwwb-add", "off");
       switch (model.getState()) {
         case model.STATE_WHITELIST:
           button.tooltipText = props.getString("addButtonAllow.tooltip");
@@ -95,7 +97,7 @@ if (!cwwb) var cwwb = {};
   };
 
   var updateRecord = function () {
-    var button = document.getElementById("cwwb-toolbar-record");
+    var button = getButton("cwwb-toolbar-record");
     if (!button) {
       return;
     }
@@ -128,8 +130,10 @@ if (!cwwb) var cwwb = {};
   };
 
   var init = function() {
+    Components.utils.import("resource:///modules/CustomizableUI.jsm", this);
     prefs = Application.prefs;
     props = document.getElementById("cwwb-properties");
+    cui = CustomizableUI;
     checkInstall();
     updateAll();
 
