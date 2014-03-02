@@ -38,6 +38,11 @@ Released under the terms of the GNU General Public License version 2 or later.
         type="checkbox"
         label="&thirdParty.label;"
         command="cwwb-cmd-toggle-third-party"/>
+      <menuseparator/>
+      <menuitem
+        label="&customizeToolbar.label;"
+        oncommand="BrowserCustomizeToolbar();"
+        class="viewCustomizeToolbar"/>
     </menupopup>
   </popupset>
 
