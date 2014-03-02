@@ -17,7 +17,6 @@ Released under the terms of the GNU General Public License version 2 or later.
       <preference id="pref-accept-third-party" name="extensions.cwwb.accept_third_party"    type="bool"/>
       <preference id="pref-purge-cookies"      name="extensions.cwwb.purge_cookies"         type="bool"/>
       <preference id="pref-rec-button-startup" name="extensions.cwwb.record_button_startup" type="int"/>
-      <preference id="pref-toolbar-buttons"    name="extensions.cwwb.toolbar_buttons"       type="int"/>
     </preferences>
 
     <groupbox>
@@ -31,18 +30,6 @@ Released under the terms of the GNU General Public License version 2 or later.
           <menuitem label="&recordStartup.off;"  value="0"/>
           <menuitem label="&recordStartup.on;"   value="1"/>
           <menuitem label="&recordStartup.last;" value="2"/>
-        </menupopup>
-      </menulist>
-    </groupbox>
-
-    <groupbox>
-      <caption label="&appearance.group;"/>
-      <label value="&toolbarButtons.label;"/>
-      <menulist preference="pref-toolbar-buttons">
-        <menupopup>
-          <menuitem label="&toolbarButtons.both;"   value="0"/>
-          <menuitem label="&toolbarButtons.record;" value="1"/>
-          <menuitem label="&toolbarButtons.add;"    value="2"/>
         </menupopup>
       </menulist>
     </groupbox>

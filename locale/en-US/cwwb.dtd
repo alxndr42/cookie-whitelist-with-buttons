@@ -15,8 +15,3 @@
 <!ENTITY recordStartup.off     "Turn the Cookie button off">
 <!ENTITY recordStartup.on      "Turn the Cookie button on">
 <!ENTITY recordStartup.last    "Leave the Cookie button unchanged">
-<!ENTITY appearance.group      "Appearance">
-<!ENTITY toolbarButtons.label  "Toolbar buttons:">
-<!ENTITY toolbarButtons.both   "Show both buttons">
-<!ENTITY toolbarButtons.record "Show the Cookie button">
-<!ENTITY toolbarButtons.add    "Show the Whitelist button">

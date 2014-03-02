@@ -4,10 +4,6 @@
 if (!cwwb) var cwwb = {};
 
 (function () {
-  const TOOLBAR_BUTTONS_PREF   = "extensions.cwwb.toolbar_buttons";
-  const TOOLBAR_BUTTONS_BOTH   = 0; // show both buttons
-  const TOOLBAR_BUTTONS_RECORD = 1; // show record button
-  const TOOLBAR_BUTTONS_ADD    = 2; // show add button
   const TOOLBAR_INSTALL_PREF   = "extensions.cwwb.toolbar_install_v3";
 
   var prefs = undefined;
@@ -38,30 +34,6 @@ if (!cwwb) var cwwb = {};
       Application.prefs.setValue(TOOLBAR_INSTALL_PREF, true);
     } catch (e) {
       Application.console.log("CWWB: Error during toolbar install: " + e);
-    }
-  };
-
-  var updateVisibility = function () {
-    var add = getButton("cwwb-toolbar-add");
-    var record = getButton("cwwb-toolbar-record");
-    if (!add || !record) {
-      return;
-    }
-
-    var buttons = prefs.getValue(TOOLBAR_BUTTONS_PREF, TOOLBAR_BUTTONS_BOTH);
-    switch (buttons) {
-      case TOOLBAR_BUTTONS_RECORD:
-        record.setAttribute("hidden", false);
-        add.setAttribute("hidden", true);
-        break;
-      case TOOLBAR_BUTTONS_ADD:
-        record.setAttribute("hidden", true);
-        add.setAttribute("hidden", false);
-        break;
-      default:
-        record.setAttribute("hidden", false);
-        add.setAttribute("hidden", false);
-        break;
     }
   };
 
@@ -117,14 +89,7 @@ if (!cwwb) var cwwb = {};
     }
   };
 
-  var handleEvent = function (aEvent) {
-    if (aEvent.data === TOOLBAR_BUTTONS_PREF) {
-      updateVisibility();
-    }
-  };
-
   var updateAll = function () {
-    updateVisibility();
     updateAdd();
     updateRecord();
   };
@@ -137,7 +102,6 @@ if (!cwwb) var cwwb = {};
     checkInstall();
     updateAll();
 
-    prefs.events.addListener("change", this);
     cwwb.AddModel.addListener(function () { updateAdd(); });
     cwwb.RecordModel.addListener(function () { updateRecord(); });
     let toolbox = document.getElementById("navigator-toolbox");
@@ -147,11 +111,10 @@ if (!cwwb) var cwwb = {};
   };
 
   var cleanup = function() {
-    prefs.events.removeListener("change", this);
+    // empty
   };
 
   cwwb.Toolbar = {
-    handleEvent : handleEvent,
     init : init,
     cleanup : cleanup
   };
