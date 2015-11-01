@@ -4,32 +4,13 @@
 if (!cwwb) var cwwb = {};
 
 (function () {
-  const PREF_SELECT_SUBDOMAIN = "extensions.cwwb.select_subdomain";
-
   var dialog  = undefined;
   var textbox = undefined;
 
-  // Returns the length of the subdomain part in the current hostname, or 0.
-  var getSubdomainLength = function () {
-    var length = 0;
-    var baseDomain = undefined;
-    var selectSub = Application.prefs.getValue(PREF_SELECT_SUBDOMAIN, true);
-    if (selectSub) {
-      try {
-        baseDomain = Services.eTLD.getBaseDomainFromHost(textbox.value);
-        length = textbox.value.length - baseDomain.length;
-      }
-      catch (e) {
-        // possibly an IP address or "localhost"
-      }
-    }
-    return length;
-  };
-
   var allowCookies = function (sessionCookies) {
-    var host = textbox.value.trim();
-    if (host) {
-      cwwb.Tools.addPermission(host, sessionCookies);
+    var origin = textbox.value.trim();
+    if (origin) {
+      cwwb.Tools.addPermission(origin, sessionCookies);
     }
     dialog.acceptDialog();
   };
@@ -43,7 +24,7 @@ if (!cwwb) var cwwb = {};
     // Without a prior select(), the range setting is overridden
     // and the entire text selected when the dialog appears.
     textbox.select();
-    textbox.setSelectionRange(0, getSubdomainLength());
+    textbox.setSelectionRange(textbox.value.length, textbox.value.length);
   };
 
   cwwb.AddDialog = {

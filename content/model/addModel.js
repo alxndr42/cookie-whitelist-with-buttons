@@ -20,7 +20,7 @@ if (!cwwb) var cwwb = {};
   const nsISWR = Components.interfaces.nsISupportsWeakReference;
   const nsIS   = Components.interfaces.nsISupports;
 
-  var currentHost = null;
+  var currentOrigin = null;
   var currentPerm = null;
   var state       = STATE_UNKNOWN;
   var listeners   = [];
@@ -29,8 +29,8 @@ if (!cwwb) var cwwb = {};
     listeners.forEach(function (listener) { listener(); });
   };
 
-  var updateState = function (aHost, aPerm) {
-    currentHost = aHost;
+  var updateState = function (aOrigin, aPerm) {
+    currentOrigin = aOrigin;
     currentPerm = aPerm;
 
     switch (aPerm) {
@@ -44,7 +44,7 @@ if (!cwwb) var cwwb = {};
         state = STATE_WHITELIST_SESSION;
         break;
       default:
-        if (aHost !== null) {
+        if (aOrigin !== null) {
           state = STATE_UNLISTED;
         } else {
           state = STATE_UNKNOWN;
@@ -55,37 +55,37 @@ if (!cwwb) var cwwb = {};
     notifyListeners();
   };
 
-  // Checks the current host's permission
-  var checkCurrentHost = function (aForce) {
+  // Checks the current origin's permission
+  var checkCurrentOrigin = function (aForce) {
     var uri = gBrowser.currentURI;
-    var host = filterHost(uri);
-    if (host === currentHost && !aForce) {
+    var origin = filterOrigin(uri);
+    if (origin === currentOrigin && !aForce) {
       return;
     }
 
     var perm = null;
-    if (host !== null) {
+    if (origin !== null) {
       perm = Services.perms.testPermission(uri, "cookie");
     }
-    if (host === currentHost && perm === currentPerm) {
+    if (origin === currentOrigin && perm === currentPerm) {
       return;
     }
 
-    updateState(host, perm);
+    updateState(origin, perm);
   };
 
-  // Returns the host of the given HTTP(S) URI, or null
-  var filterHost = function (aURI) {
-    var host = null;
+  // Returns the origin of the given HTTP(S) URI, or null
+  var filterOrigin = function (aURI) {
+    var origin = null;
     if (aURI && (aURI.schemeIs("http") || aURI.schemeIs("https"))) {
       try {
-        host = aURI.host;
+        origin = aURI.prePath;
       }
       catch (e) {
         // ignore and return null
       }
     }
-    return host;
+    return origin;
   };
 
   var addListener = function (aListener) {
@@ -108,7 +108,7 @@ if (!cwwb) var cwwb = {};
   };
 
   var onLocationChange = function () {
-    checkCurrentHost(false);
+    checkCurrentOrigin(false);
   };
 
   var onProgressChange = function () {};
@@ -124,11 +124,11 @@ if (!cwwb) var cwwb = {};
       return;
     }
 
-    checkCurrentHost(true);
+    checkCurrentOrigin(true);
   };
 
   var init = function () {
-    checkCurrentHost(true);
+    checkCurrentOrigin(true);
     gBrowser.addProgressListener(this);
     Services.obs.addObserver(this, "perm-changed", false);
   };
