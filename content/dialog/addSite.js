@@ -8,9 +8,9 @@ if (!cwwb) var cwwb = {};
   var textbox = undefined;
 
   var allowCookies = function (sessionCookies) {
-    var origin = textbox.value.trim();
-    if (origin) {
-      cwwb.Tools.addPermission(origin, sessionCookies);
+    var hostPort = textbox.value.trim();
+    if (hostPort) {
+      cwwb.Tools.addPermission(hostPort, sessionCookies);
     }
     dialog.acceptDialog();
   };
@@ -24,7 +24,7 @@ if (!cwwb) var cwwb = {};
     // Without a prior select(), the range setting is overridden
     // and the entire text selected when the dialog appears.
     textbox.select();
-    textbox.setSelectionRange(textbox.value.length, textbox.value.length);
+    textbox.setSelectionRange(0, 0);
   };
 
   cwwb.AddDialog = {

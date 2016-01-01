@@ -10,34 +10,35 @@ if (!cwwb) var cwwb = {};
   const PERM_SESSION = Components.interfaces.nsICookiePermission.ACCESS_SESSION;
   const nsIC2 = Components.interfaces.nsICookie2;
 
-  var addPermission = function (origin, sessionCookies) {
+  var addPermission = function (hostPort, sessionCookies) {
     var uri = undefined;
     var type = sessionCookies ? PERM_SESSION : PERM_ALLOW;
     try {
-      uri = Services.io.newURI(origin, null, null);
+      uri = Services.io.newURI("http://" + hostPort, null, null);
+      Services.perms.add(uri, "cookie", type);
+      uri = Services.io.newURI("https://" + hostPort, null, null);
       Services.perms.add(uri, "cookie", type);
     }
     catch (e) {
       Application.console.log(
-        "CWWB: Error while adding permission for '" + origin + "': " + e);
+        "CWWB: Error while adding permission for '" + hostPort + "': " + e);
     }
   };
 
-  // Returns the current HTTP(S) URI's origin, or an empty string
+  // Returns the current HTTP(S) URI's host and port, or an empty string
   // A "www." prefix is removed by default
-  var getShortOrigin = function () {
-    var origin = "";
+  var getHostPort = function () {
+    var hostPort = "";
     var uri = gBrowser.currentURI;
     var removeWWW = undefined;
     if (uri && (uri.schemeIs("http") || uri.schemeIs("https"))) {
-      origin = uri.host;
+      hostPort = uri.hostPort;
       removeWWW = Application.prefs.getValue(PREF_REMOVE_WWW, true);
-      if (removeWWW && origin.indexOf("www.") === 0) {
-        origin = origin.substring(4);
+      if (removeWWW && hostPort.indexOf("www.") === 0) {
+        hostPort = hostPort.substring(4);
       }
-      origin = uri.scheme + "://" + origin;
     }
-    return origin;
+    return hostPort;
   };
 
   // TODO Handle domain cookies correctly
@@ -78,7 +79,7 @@ if (!cwwb) var cwwb = {};
 
   cwwb.Tools = {
     addPermission : addPermission,
-    getShortOrigin : getShortOrigin,
+    getHostPort : getHostPort,
     purgeCookies : purgeCookies
   };
 }());

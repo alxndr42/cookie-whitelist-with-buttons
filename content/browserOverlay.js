@@ -17,7 +17,7 @@ if (!cwwb) var cwwb = {};
       "chrome://cwwb/content/dialog/addSite.xul",
       "_blank",
       "modal,centerscreen",
-      tools.getShortOrigin());
+      tools.getHostPort());
   };
 
   cwwb.showWhitelist = function () {
@@ -65,7 +65,7 @@ if (!cwwb) var cwwb = {};
       return;
     }
 
-    tools.addPermission(tools.getShortOrigin(), sessionCookies);
+    tools.addPermission(tools.getHostPort(), sessionCookies);
   };
 
   cwwb.init = function () {
