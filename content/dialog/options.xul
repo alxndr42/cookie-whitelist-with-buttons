@@ -14,14 +14,12 @@ Released under the terms of the GNU General Public License version 2 or later.
 
   <prefpane>
     <preferences>
-      <preference id="pref-accept-third-party" name="extensions.cwwb.accept_third_party"    type="bool"/>
       <preference id="pref-purge-cookies"      name="extensions.cwwb.purge_cookies"         type="bool"/>
       <preference id="pref-rec-button-startup" name="extensions.cwwb.record_button_startup" type="int"/>
     </preferences>
 
     <groupbox>
       <caption label="&main.group;"/>
-      <checkbox label="&thirdParty.label;" preference="pref-accept-third-party"/>
       <checkbox label="&purgeCookies.label;" preference="pref-purge-cookies"/>
       <separator orient="vertical"/>
       <label value="&recordStartup.label;"/>

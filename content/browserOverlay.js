@@ -47,10 +47,6 @@ if (!cwwb) var cwwb = {};
       null);
   };
 
-  cwwb.toggleThirdParty = function () {
-    record.toggleThirdParty();
-  };
-
   cwwb.toggleCookieMode = function () {
     var purge = (record.getBehavior() !== record.BEHAVIOR_REJECT);
     record.toggleBehavior();

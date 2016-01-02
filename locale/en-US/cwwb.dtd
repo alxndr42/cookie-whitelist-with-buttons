@@ -9,7 +9,6 @@
 <!ENTITY cancel.label           "Cancel">
 <!ENTITY cancel.access          "C">
 <!ENTITY main.group             "Options">
-<!ENTITY thirdParty.label       "Accept third-party cookies">
 <!ENTITY customizeToolbar.label "Customize...">
 <!ENTITY purgeCookies.label     "Remove cookies from unlisted websites">
 <!ENTITY recordStartup.label    "When Firefox starts:">

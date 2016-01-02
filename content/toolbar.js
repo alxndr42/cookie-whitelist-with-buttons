@@ -82,11 +82,6 @@ if (!cwwb) var cwwb = {};
       button.setAttribute("cwwb-record", "on");
       button.tooltipText = props.getString("recordOn.tooltip");
     }
-
-    var context = document.getElementById("cwwb-context-third-party");
-    if (context) {
-      context.setAttribute("checked", model.isThirdParty());
-    }
   };
 
   var updateAll = function () {

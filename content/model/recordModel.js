@@ -15,13 +15,11 @@ if (!cwwb) var cwwb = {};
   const STARTUP_STATE_OFF   = 0;
   const STARTUP_STATE_ON    = 1;
   const STARTUP_STATE_LAST  = 2;
-  const THIRD_PARTY_PREF    = "extensions.cwwb.accept_third_party";
 
   var prefs        = undefined;
   var behavior     = undefined;
   var lifetime     = undefined;
   var purgeCookies = undefined;
-  var thirdParty   = undefined;
   var listeners    = [];
 
   var notifyListeners = function () {
@@ -36,7 +34,7 @@ if (!cwwb) var cwwb = {};
 
   var setState = function (aRecordOn) {
     if (aRecordOn) {
-      setBehavior(thirdParty ? BEHAVIOR_ACCEPT_ALL : BEHAVIOR_ACCEPT);
+      setBehavior(BEHAVIOR_ACCEPT);
     } else {
       setBehavior(BEHAVIOR_REJECT);
     }
@@ -67,7 +65,6 @@ if (!cwwb) var cwwb = {};
     behavior = prefs.getValue(BEHAVIOR_PREF, BEHAVIOR_REJECT);
     lifetime = prefs.getValue(LIFETIME_PREF, LIFETIME_SESSION);
     purgeCookies = prefs.getValue(PURGE_COOKIES_PREF, true);
-    thirdParty = prefs.getValue(THIRD_PARTY_PREF, false);
   };
 
   var addListener = function (aListener) {
@@ -86,20 +83,11 @@ if (!cwwb) var cwwb = {};
     return purgeCookies;
   };
 
-  var isThirdParty = function () {
-    return thirdParty;
-  };
-
-  var toggleThirdParty = function () {
-    prefs.setValue(THIRD_PARTY_PREF, !thirdParty);
-  };
-
   var handleEvent = function (aEvent) {
     var data = aEvent.data;
     if (data === BEHAVIOR_PREF ||
         data === LIFETIME_PREF ||
-        data === PURGE_COOKIES_PREF ||
-        data === THIRD_PARTY_PREF) {
+        data === PURGE_COOKIES_PREF) {
       syncPrefs();
       setLifetime();
       setState(behavior !== BEHAVIOR_REJECT);
@@ -126,8 +114,6 @@ if (!cwwb) var cwwb = {};
     getBehavior : getBehavior,
     toggleBehavior : toggleBehavior,
     isPurgeCookies : isPurgeCookies,
-    isThirdParty : isThirdParty,
-    toggleThirdParty : toggleThirdParty,
     handleEvent : handleEvent,
     init : init,
     cleanup : cleanup
