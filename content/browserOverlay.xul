@@ -21,7 +21,8 @@ Released under the terms of the GNU General Public License version 2 or later.
   </stringbundleset>
 
   <commandset>
-    <command id="cwwb-cmd-show-add-dialog" oncommand="cwwb.showAddDialog();"/>
+    <command id="cwwb-cmd-show-add-dialog" oncommand="cwwb.showAddDialog(false);"/>
+    <command id="cwwb-cmd-show-add-dialog-empty" oncommand="cwwb.showAddDialog(true);"/>
     <command id="cwwb-cmd-show-cookies" oncommand="cwwb.showCookies();"/>
     <command id="cwwb-cmd-show-whitelist" oncommand="cwwb.showWhitelist();"/>
     <command id="cwwb-cmd-toggle-cookie-mode" oncommand="cwwb.toggleCookieMode();"/>
@@ -31,6 +32,8 @@ Released under the terms of the GNU General Public License version 2 or later.
     <menupopup id="cwwb-context" position="after_start">
       <menuitem label="&cookies.label;" command="cwwb-cmd-show-cookies"/>
       <menuitem label="&whitelist.label;" command="cwwb-cmd-show-whitelist"/>
+      <menuseparator/>
+      <menuitem label="&add.title;" command="cwwb-cmd-show-add-dialog-empty"/>
       <menuseparator/>
       <menuitem
         label="&customizeToolbar.label;"

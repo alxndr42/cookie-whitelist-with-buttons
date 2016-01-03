@@ -7,9 +7,9 @@ if (!cwwb) var cwwb = {};
   var record = undefined;
   var tools = undefined;
 
-  cwwb.showAddDialog = function () {
+  cwwb.showAddDialog = function (empty) {
     var model = cwwb.AddModel;
-    if (model.getState() !== model.STATE_UNLISTED) {
+    if (empty !== true && model.getState() !== model.STATE_UNLISTED) {
       return;
     }
 
@@ -17,15 +17,15 @@ if (!cwwb) var cwwb = {};
       "chrome://cwwb/content/dialog/addSite.xul",
       "_blank",
       "modal,centerscreen",
-      tools.getHostPort());
+      empty !== true ? tools.getHostPort() : "");
   };
 
   cwwb.showWhitelist = function () {
     var properties = document.getElementById("cwwb-properties");
     var params = {
       blockVisible   : false,
-      sessionVisible : true,
-      allowVisible   : true,
+      sessionVisible : false,
+      allowVisible   : false,
       prefilledHost  : "",
       permissionType : "cookie",
       windowTitle    : properties.getString("whitelist.title"),
