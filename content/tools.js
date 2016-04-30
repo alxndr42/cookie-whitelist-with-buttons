@@ -67,7 +67,12 @@ if (!cwwb) var cwwb = {};
           purge[key] = shouldPurgeCookie(cookie);
         }
         if (purge[key]) {
-          Services.cookies.remove(cookie.host, cookie.name, cookie.path, false);
+          Services.cookies.remove(
+            cookie.host,
+            cookie.name,
+            cookie.path,
+            false,
+            cookie.originAttributes);
         }
       }
     }
