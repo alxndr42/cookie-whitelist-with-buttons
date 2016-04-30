@@ -4,9 +4,8 @@
 if (!cwwb) var cwwb = {};
 
 (function () {
-  const TOOLBAR_INSTALL_PREF   = "extensions.cwwb.toolbar_install_v3";
+  const TOOLBAR_INSTALL_PREF = "extensions.cwwb.toolbar_install_v3";
 
-  var prefs = undefined;
   var props = undefined;
   var cui = undefined;
 
@@ -23,7 +22,7 @@ if (!cwwb) var cwwb = {};
   };
 
   var checkInstall = function () {
-    var installed = Application.prefs.getValue(TOOLBAR_INSTALL_PREF, false);
+    var installed = Services.prefs.getBoolPref(TOOLBAR_INSTALL_PREF);
     if (installed) {
       return;
     }
@@ -31,9 +30,9 @@ if (!cwwb) var cwwb = {};
     try {
       cui.addWidgetToArea("cwwb-toolbar-record", cui.AREA_NAVBAR);
       cui.addWidgetToArea("cwwb-toolbar-add", cui.AREA_NAVBAR);
-      Application.prefs.setValue(TOOLBAR_INSTALL_PREF, true);
+      Services.prefs.setBoolPref(TOOLBAR_INSTALL_PREF, true);
     } catch (e) {
-      Application.console.log("CWWB: Error during toolbar install: " + e);
+      cwwb.log("Error during toolbar install: " + e);
     }
   };
 
@@ -91,7 +90,6 @@ if (!cwwb) var cwwb = {};
 
   var init = function() {
     Components.utils.import("resource:///modules/CustomizableUI.jsm", this);
-    prefs = Application.prefs;
     props = document.getElementById("cwwb-properties");
     cui = CustomizableUI;
     checkInstall();

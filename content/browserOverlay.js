@@ -64,6 +64,10 @@ if (!cwwb) var cwwb = {};
     tools.addPermission(tools.getHostPort(), sessionCookies);
   };
 
+  cwwb.log = function (message) {
+    Services.console.logStringMessage("CWWB: " + message);
+  }
+
   cwwb.init = function () {
     Components.utils.import("resource://gre/modules/Services.jsm");
 

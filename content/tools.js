@@ -20,8 +20,7 @@ if (!cwwb) var cwwb = {};
       Services.perms.add(uri, "cookie", type);
     }
     catch (e) {
-      Application.console.log(
-        "CWWB: Error while adding permission for '" + hostPort + "': " + e);
+      cwwb.log("Error while adding permission for '" + hostPort + "': " + e);
     }
   };
 
@@ -33,7 +32,7 @@ if (!cwwb) var cwwb = {};
     var removeWWW = undefined;
     if (uri && (uri.schemeIs("http") || uri.schemeIs("https"))) {
       hostPort = uri.hostPort;
-      removeWWW = Application.prefs.getValue(PREF_REMOVE_WWW, true);
+      removeWWW = Services.prefs.getBoolPref(PREF_REMOVE_WWW);
       if (removeWWW && hostPort.indexOf("www.") === 0) {
         hostPort = hostPort.substring(4);
       }
@@ -73,7 +72,7 @@ if (!cwwb) var cwwb = {};
       }
     }
     catch (e) {
-      Application.console.log("CWWB: Error while purging cookies: " + e);
+      cwwb.log("Error while purging cookies: " + e);
     }
   };
 

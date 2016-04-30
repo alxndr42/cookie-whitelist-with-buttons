@@ -4,12 +4,14 @@
 if (!cwwb) var cwwb = {};
 
 (function () {
+  const COOKIE_DOMAIN       = "network.cookie.";
   const BEHAVIOR_PREF       = "network.cookie.cookieBehavior";
   const BEHAVIOR_ACCEPT_ALL = 0; // accept cookies from everyone
   const BEHAVIOR_ACCEPT     = 1; // accept cookies from original site only
   const BEHAVIOR_REJECT     = 2; // reject cookies
   const LIFETIME_PREF       = "network.cookie.lifetimePolicy";
   const LIFETIME_SESSION    = 2; // accept cookies for session
+  const CWWB_DOMAIN         = "extensions.cwwb.";
   const PURGE_COOKIES_PREF  = "extensions.cwwb.purge_cookies";
   const STARTUP_STATE_PREF  = "extensions.cwwb.record_button_startup";
   const STARTUP_STATE_OFF   = 0;
@@ -28,7 +30,7 @@ if (!cwwb) var cwwb = {};
 
   var setBehavior = function (aBehavior) {
     if (behavior !== aBehavior) {
-      prefs.setValue(BEHAVIOR_PREF, aBehavior);
+      prefs.setIntPref(BEHAVIOR_PREF, aBehavior);
     }
   };
 
@@ -42,18 +44,24 @@ if (!cwwb) var cwwb = {};
 
   var setLifetime = function () {
     if (lifetime !== LIFETIME_SESSION) {
-      prefs.setValue(LIFETIME_PREF, LIFETIME_SESSION);
+      prefs.setIntPref(LIFETIME_PREF, LIFETIME_SESSION);
     }
   };
 
   var setStartupState = function () {
-    if (Application.windows.length > 1) {
+    var windowCount = 0;
+    var enumerator = Services.ww.getWindowEnumerator();
+    while (enumerator.hasMoreElements()) {
+      enumerator.getNext();
+      windowCount++;
+    }
+    if (windowCount > 1) {
       return;
     }
 
     setLifetime();
 
-    var startupState = prefs.getValue(STARTUP_STATE_PREF, STARTUP_STATE_OFF);
+    var startupState = prefs.getIntPref(STARTUP_STATE_PREF);
     if (startupState === STARTUP_STATE_LAST) {
       return;
     }
@@ -62,9 +70,9 @@ if (!cwwb) var cwwb = {};
   };
 
   var syncPrefs = function () {
-    behavior = prefs.getValue(BEHAVIOR_PREF, BEHAVIOR_REJECT);
-    lifetime = prefs.getValue(LIFETIME_PREF, LIFETIME_SESSION);
-    purgeCookies = prefs.getValue(PURGE_COOKIES_PREF, true);
+    behavior = prefs.getIntPref(BEHAVIOR_PREF);
+    lifetime = prefs.getIntPref(LIFETIME_PREF);
+    purgeCookies = prefs.getBoolPref(PURGE_COOKIES_PREF);
   };
 
   var addListener = function (aListener) {
@@ -83,11 +91,10 @@ if (!cwwb) var cwwb = {};
     return purgeCookies;
   };
 
-  var handleEvent = function (aEvent) {
-    var data = aEvent.data;
-    if (data === BEHAVIOR_PREF ||
-        data === LIFETIME_PREF ||
-        data === PURGE_COOKIES_PREF) {
+  var observe = function (aSubject, aTopic, aData) {
+    if (aData === BEHAVIOR_PREF ||
+        aData === LIFETIME_PREF ||
+        aData === PURGE_COOKIES_PREF) {
       syncPrefs();
       setLifetime();
       setState(behavior !== BEHAVIOR_REJECT);
@@ -96,14 +103,16 @@ if (!cwwb) var cwwb = {};
   };
 
   var init = function () {
-    prefs = Application.prefs;
-    prefs.events.addListener("change", this);
+    prefs = Services.prefs;
+    prefs.addObserver(COOKIE_DOMAIN, this, false);
+    prefs.addObserver(CWWB_DOMAIN, this, false);
     syncPrefs();
     setStartupState();
   };
 
   var cleanup = function () {
-    prefs.events.removeListener("change", this);
+    prefs.removeObserver(COOKIE_DOMAIN, this);
+    prefs.removeObserver(CWWB_DOMAIN, this);
   };
 
   cwwb.RecordModel = {
@@ -114,7 +123,7 @@ if (!cwwb) var cwwb = {};
     getBehavior : getBehavior,
     toggleBehavior : toggleBehavior,
     isPurgeCookies : isPurgeCookies,
-    handleEvent : handleEvent,
+    observe : observe,
     init : init,
     cleanup : cleanup
   };
